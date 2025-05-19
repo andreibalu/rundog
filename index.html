@@ -118,7 +118,7 @@
         #result-text { text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color), 1px 1px 0px #000; }
         
         .themed-pip > svg.themed-icon {
-            filter: drop-shadow(0 0 2px var(--dice-dot)); /* Slightly reduced drop shadow for clarity at smaller sizes */
+            filter: drop-shadow(0 0 2px var(--dice-dot)); 
         }
 
         .toggle-button { text-shadow: 0 0 3px var(--secondary-color); }
@@ -138,7 +138,6 @@
         .theme-button:hover { box-shadow: 0 0 10px var(--accent-color); }
         .unlock-notification { box-shadow: 0 0 15px var(--accent-color); }
 
-        /* Grid area definitions for dice faces - Kept in CSS */
         .dice[data-value="1"] { grid-template-areas: ". . ." ". a ." ". . ."; }
         .dice[data-value="2"] { grid-template-areas: "a . ." ". . ." ". . b"; }
         .dice[data-value="3"] { grid-template-areas: "a . ." ". b ." ". . c"; }
@@ -169,7 +168,7 @@
         .dice[data-value="6"] .dice-face-item:nth-child(6) { grid-area: f; }
     </style>
 </head>
-<body class="font-press-start bg-theme-background text-theme-text flex flex-col items-center justify-center min-h-screen m-0 p-2.5 box-border overflow-hidden relative"> 
+<body class="font-press-start bg-theme-background text-theme-text flex flex-col items-center justify-center min-h-screen m-0 box-border overflow-hidden relative"> 
     
     <div id="unlock-notification" class="unlock-notification fixed top-5 left-1/2 -translate-x-1/2 bg-theme-accent text-theme-background py-2.5 px-[15px] rounded-[5px] z-[1000] text-[0.8em] opacity-0 transition-opacity duration-300 transform pointer-events-none">Theme unlocked!</div>
 
@@ -216,7 +215,6 @@
         const comboText = document.getElementById('combo-text');        
         const diceCountButtons = [document.getElementById('dice-count-2'), document.getElementById('dice-count-3')];
         const unlockNotification = document.getElementById('unlock-notification');
-        // Theme buttons are now inside game-container, adjust selector if needed, or keep if IDs are unique
         const themeButtons = document.querySelectorAll('.game-container .theme-button'); 
         const diceSetButtons = document.querySelectorAll('.dice-set-button');
         
@@ -225,7 +223,7 @@
         let currentTheme = localStorage.getItem('currentTheme') || 'retro';
         
         let currentDiceSet = localStorage.getItem('currentDiceSet') || 'numbers';
-        if (currentDiceSet === 'emoji') { // If old stored value was emoji, default to numbers
+        if (currentDiceSet === 'emoji') { 
             currentDiceSet = 'numbers';
             localStorage.setItem('currentDiceSet', currentDiceSet);
         }
@@ -234,7 +232,8 @@
                              JSON.parse(localStorage.getItem('unlockedThemes')) : ['retro'];
 
         function initThemes() {
-            const baseBodyClasses = "font-press-start bg-theme-background text-theme-text flex flex-col items-center justify-center min-h-screen m-0 p-2.5 box-border overflow-hidden relative";
+            // Removed p-2.5 from baseBodyClasses
+            const baseBodyClasses = "font-press-start bg-theme-background text-theme-text flex flex-col items-center justify-center min-h-screen m-0 box-border overflow-hidden relative";
             document.body.className = `theme-${currentTheme} ${baseBodyClasses}`; 
             
             themeButtons.forEach(button => {
@@ -246,12 +245,10 @@
                 } else {
                     button.classList.add('locked', 'filter', 'grayscale', 'opacity-50', 'cursor-not-allowed');
                 }
-                // Update lock icon visibility
                 const lockIcon = button.querySelector('.lock-icon');
                 if (lockIcon) {
                     lockIcon.style.display = button.classList.contains('locked') ? 'inline' : 'none';
                 }
-
                 button.style.border = theme === currentTheme ? '3px solid var(--text-color)' : '2px solid var(--text-color)';
             });
         }
@@ -281,7 +278,6 @@
                 5: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V8h2v4zm4 4h-2v-2h2v2zm0-4h-2V8h2v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M4 20q0 .825.588 1.413T6 22h12q.825 0 1.413-.587T20 20V8q0-.825-.587-1.412T18 6H6q-.825 0-1.412.588T4 8Zm2-12h12v12H6Zm0 0V6V4q0-.825.588-1.412T8 2h8q.825 0 1.413.588T18 4v2h-2V4H8v2Z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.92V13H5v-1.99h7z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L2.5 6.5V17.5L12 22L21.5 17.5V6.5L12 2ZM4.5 7.5L12 11L19.5 7.5L12 4L4.5 7.5Z"/></svg>'], 
                 6: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V8h2v4zm4 4h-2v-2h2v2zm0-4h-2V8h2v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M4 20q0 .825.588 1.413T6 22h12q.825 0 1.413-.587T20 20V8q0-.825-.587-1.412T18 6H6q-.825 0-1.412.588T4 8Zm2-12h12v12H6Zm0 0V6V4q0-.825.588-1.412T8 2h8q.825 0 1.413.588T18 4v2h-2V4H8v2Z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.92V13H5v-1.99h7z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L2.5 6.5V17.5L12 22L21.5 17.5V6.5L12 2ZM4.5 7.5L12 11L19.5 7.5L12 4L4.5 7.5Z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3v-2H5v2h14z"/></svg>']
             }
-            // Emoji theme removed
         };        
         
         function createDieElement(value) {
@@ -293,16 +289,14 @@
             if (itemsToRender) {
                 itemsToRender.forEach(itemContent => { 
                     const pipElement = document.createElement('div');
-                    // Added p-0.5 for padding around SVGs
-                    pipElement.className = 'dice-face-item self-center justify-self-center p-0.5'; 
+                    pipElement.className = 'dice-face-item self-center justify-self-center p-0.5'; // Added p-0.5
 
                     if (currentDiceSet === 'numbers') {
                         pipElement.className += ' dot w-3 h-3 sm:w-2.5 sm:h-2.5 bg-theme-dice-dot rounded-full';
                         pipElement.style.boxShadow = 'var(--glow-soft), 0 0 3px var(--dice-dot)';
                     } else {
-                        // The SVG will scale to this container. text-theme-dice-dot provides currentColor for SVG.
                         pipElement.className += ' themed-pip flex items-center justify-center w-full h-full text-theme-dice-dot';
-                        pipElement.innerHTML = itemContent; // itemContent is the SVG string with its own classes
+                        pipElement.innerHTML = itemContent; 
                     }
                     die.appendChild(pipElement);
                 });
@@ -345,7 +339,6 @@
         }
 
         function checkUnlockables() {
-            // Ensure themeButtons are correctly selected after DOM modifications if any
             const currentThemeButtons = document.querySelectorAll('.game-container .theme-button');
             currentThemeButtons.forEach(button => {
                 if (button.classList.contains('locked') && button.dataset.unlockAt) {
@@ -355,18 +348,14 @@
                         button.removeAttribute('data-unlock-at');
                         const theme = button.dataset.theme;
                         button.title = `${theme.charAt(0).toUpperCase() + theme.slice(1)} Theme`;
-                        
-                        // Remove lock icon if it exists
                         const lockIcon = button.querySelector('.lock-icon');
                         if (lockIcon) lockIcon.remove();
-
                         if (!unlockedThemes.includes(theme)) {
                             unlockedThemes.push(theme);
                             localStorage.setItem('unlockedThemes', JSON.stringify(unlockedThemes));
                             showUnlockNotification(`${theme.charAt(0).toUpperCase() + theme.slice(1)} Theme Unlocked!`);
                         }
                     } else {
-                        // Ensure lock icon is present if still locked
                         if (!button.querySelector('.lock-icon')) {
                             const lockIconEl = document.createElement('span');
                             lockIconEl.className = 'lock-icon absolute text-xs top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2';
@@ -436,7 +425,6 @@
             });
         });
         
-        // Re-select themeButtons after DOM is ready for event listeners
         document.querySelectorAll('.game-container .theme-button').forEach(button => {
             button.addEventListener('click', () => {
                 const theme = button.dataset.theme;
@@ -462,13 +450,12 @@
             });
         });
 
-        function initializeApp() { // Renamed from initializeDice for clarity
-            // Create lock icons for theme buttons that are locked
+        function initializeApp() { 
             document.querySelectorAll('.theme-button.locked').forEach(button => {
-                if (!button.querySelector('.lock-icon')) { // Add lock icon if not present
+                if (!button.querySelector('.lock-icon')) { 
                     const lockIconEl = document.createElement('span');
                     lockIconEl.className = 'lock-icon absolute text-xs top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2';
-                    lockIconEl.textContent = '🔒'; // Simple text lock
+                    lockIconEl.textContent = '🔒'; 
                     button.appendChild(lockIconEl);
                 }
             });
@@ -479,7 +466,7 @@
             diceCountButtons.forEach(btn => btn.classList.remove('active'));
             const activeButton = document.querySelector(`.toggle-button[data-count="${numberOfDice}"]`);
             if (activeButton) activeButton.classList.add('active');
-            checkUnlockables(); // Check unlock status on load
+            checkUnlockables(); 
         }
         
         window.onload = initializeApp; 
