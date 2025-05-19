@@ -24,20 +24,25 @@
             --glow-soft: 0 0 5px var(--accent-color);
         }
 
+        html {
+            height: 100%;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Press Start 2P', cursive;
             background-color: var(--background-color);
             background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E"),
                               linear-gradient(var(--background-color), var(--background-color));
             color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100%; 
             margin: 0;
-            padding: 15px; 
-            box-sizing: border-box;
+            padding: 10px; 
+            box-sizing: border-box; 
             overflow: hidden; 
             position: relative; 
         }
@@ -82,7 +87,6 @@
 
         .game-container {
             background-color: rgba(10, 5, 15, 0.85); 
-            padding: 20px; 
             border-radius: 15px;
             border: 3px solid var(--primary-color);
             box-shadow: var(--glow-strong), 
@@ -91,19 +95,30 @@
                         0 0 70px rgba(10,0,20,0.7); 
             text-align: center;
             width: 100%; 
-            max-width: 500px;
+            max-width: 500px; 
+            height: 100%; 
+            max-height: 95vh; 
             z-index: 5; 
             position: relative;
             transform: perspective(1200px) rotateX(1.5deg) rotateY(-1deg) scale(0.97);
             transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around; 
+            padding: clamp(10px, 3vh, 20px) 20px; /* Responsive top/bottom padding */
+            box-sizing: border-box; 
+            overflow-y: auto; 
         }
 
         h1 { 
             color: var(--primary-color);
-            /* Default strong glow for larger screens */
-            text-shadow: 0 0 6px var(--primary-color), 0 0 12px var(--accent-color), 0 0 2px #000; 
+            /* Default glow for larger screens, aiming for clarity */
+            text-shadow: 0 0 3px var(--primary-color), /* Inner glow */
+                         0 0 7px var(--primary-color), /* Outer glow */
+                         1px 1px 1px rgba(0,0,0,0.8);  /* Definition shadow */
             margin-top: 0; 
-            margin-bottom: 20px; 
+            margin-bottom: 15px; /* Restored reasonable margin */
             font-size: 1.6em; 
             line-height: 1.2; 
             word-break: break-word; 
@@ -113,7 +128,7 @@
             display: flex;
             justify-content: center;
             gap: 15px; 
-            margin-bottom: 25px; 
+            margin-bottom: 20px; /* Restored reasonable margin */
             min-height: 70px; 
         }
 
@@ -151,7 +166,6 @@
             justify-self: center;
         }
 
-        /* Dice face patterns (Grid areas) */
         .dice[data-value="1"] { grid-template-areas: ". . ." ". a ." ". . ."; }
         .dice[data-value="2"] { grid-template-areas: "a . ." ". . ." ". . b"; }
         .dice[data-value="3"] { grid-template-areas: "a . ." ". b ." ". . c"; }
@@ -159,7 +173,6 @@
         .dice[data-value="5"] { grid-template-areas: "a . b" ". c ." "d . e"; }
         .dice[data-value="6"] { grid-template-areas: "a . b" "c . d" "e . f"; }
 
-        /* Assigning dots to grid areas */
         .dice[data-value="1"] .dot:nth-child(1) { grid-area: a; }
         .dice[data-value="2"] .dot:nth-child(1) { grid-area: a; }
         .dice[data-value="2"] .dot:nth-child(2) { grid-area: b; }
@@ -183,11 +196,11 @@
         .dice[data-value="6"] .dot:nth-child(6) { grid-area: f; }
 
         .controls {
-            margin-bottom: 20px; 
+            margin-bottom: 15px; /* Restored reasonable margin */
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px; 
+            gap: 10px; 
         }
         
         .toggle-button-container {
@@ -231,7 +244,7 @@
             background: linear-gradient(145deg, var(--primary-color), #c000c0); 
             color: var(--text-color); 
             border: 2px solid var(--accent-color); 
-            padding: 12px 25px; 
+            padding: 10px 20px; 
             font-family: 'Press Start 2P', cursive;
             font-size: 0.9em; 
             cursor: pointer;
@@ -240,6 +253,8 @@
             box-shadow: 0 0 12px var(--primary-color), 0 0 18px var(--primary-color), 
                         0 4px 8px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.2); 
             transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.2s ease;
+            margin-top: 5px; 
+            margin-bottom: 5px;
         }
 
         .roll-button:hover {
@@ -257,7 +272,8 @@
         }
 
         #result-text {
-            margin-top: 15px; 
+            margin-top: 10px; /* Restored reasonable margin */
+            margin-bottom: 10px; /* Added for balance */
             font-size: 1.1em; 
             color: var(--accent-color);
             text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color), 1px 1px 0px #000; 
@@ -269,33 +285,33 @@
         @media (max-width: 480px) { 
             h1 { 
                 font-size: 1.2em; 
-                margin-bottom: 15px;
-                /* Further reduced pink glow, slightly softer yellow glow for mobile title */
-                text-shadow: 0 0 2px rgba(255,0,255,0.7), /* Reduced pink glow size and opacity */
-                             0 0 4px rgba(255,255,0,0.5),  /* Reduced yellow glow */
-                             1px 1px 1px rgba(0,0,0,0.6); /* Kept dark shadow for definition */
+                margin-bottom: 10px; 
+                /* Refined pink glow for mobile: sharper inner, softer outer */
+                text-shadow: 0 0 2px rgba(255,0,255,0.9), /* Tighter, more opaque inner pink */
+                             0 0 5px rgba(255,0,255,0.5), /* Softer, wider outer pink */
+                             1px 1px 1px rgba(0,0,0,0.7);  /* Dark offset */
             }
             .game-container {
-                padding: 15px;
+                padding: clamp(10px, 2vh, 15px) 15px; 
                 transform: perspective(1000px) rotateX(1deg) rotateY(-0.5deg) scale(0.98); 
             }
             .dice { width: 50px; height: 50px; }
             .dot { width: 8px; height: 8px; }
-            .roll-button { padding: 10px 20px; font-size: 0.8em; }
+            .roll-button { padding: 8px 15px; font-size: 0.8em; }
             #result-text { font-size: 1em; }
             .toggle-button { font-size: 0.7em; padding: 6px 8px; }
-            .dice-area { gap: 10px; min-height: 60px; margin-bottom: 20px;}
-            .controls { margin-bottom: 15px; gap: 10px;}
+            .dice-area { gap: 10px; min-height: 60px; margin-bottom: 15px;} 
+            .controls { margin-bottom: 10px; gap: 8px;} 
         }
 
         @media (max-width: 360px) { 
              h1 {
                 font-size: 1.0em; 
                 line-height: 1.1;
-                 /* Consistent very subtle glow for smallest screens */
-                text-shadow: 0 0 1px rgba(255,0,255,0.6), /* Very subtle pink */
-                             0 0 3px rgba(255,255,0,0.4),  /* Very subtle yellow */
-                             1px 1px 1px rgba(0,0,0,0.5);
+                /* Consistent subtle glow for smallest screens */
+                text-shadow: 0 0 1px rgba(255,0,255,0.8), /* Very tight inner pink */
+                             0 0 4px rgba(255,0,255,0.4), /* Softer outer pink */
+                             1px 1px 1px rgba(0,0,0,0.6);
              }
             .game-container {
                  transform: perspective(800px) rotateX(0.5deg) rotateY(0deg) scale(0.97);
@@ -310,7 +326,9 @@
 </head>
 <body>
     <div class="game-container">
-        <h1>Ia si alearga caine</h1> <div class="controls">
+        <h1>Ia si alearga caine</h1>
+        
+        <div class="controls">
              <div class="toggle-button-container">
                 <button class="toggle-button active" id="dice-count-2" data-count="2">2 Dice</button>
                 <button class="toggle-button" id="dice-count-3" data-count="3">3 Dice</button>
@@ -323,7 +341,8 @@
         <button class="roll-button" id="roll-button">Roll for Run!</button>
 
         <p id="result-text">Roll the dice to see your fate!</p>
-    </div>
+
+        </div>
 
     <script>
         const diceArea = document.getElementById('dice-area');
@@ -331,15 +350,14 @@
         const resultText = document.getElementById('result-text');
         const diceCountButtons = [document.getElementById('dice-count-2'), document.getElementById('dice-count-3')];
         
-        let numberOfDice = 2; // Default to 2 dice
+        let numberOfDice = 2; 
 
         // Function to create a single die element
         function createDieElement(value) {
             const die = document.createElement('div');
             die.classList.add('dice');
-            die.dataset.value = value; // Store the value for styling
+            die.dataset.value = value; 
 
-            // Add dots based on the value
             for (let i = 0; i < value; i++) {
                 const dot = document.createElement('div');
                 dot.classList.add('dot');
@@ -350,7 +368,7 @@
 
         // Function to render dice on the screen
         function renderDice(values) {
-            diceArea.innerHTML = ''; // Clear previous dice
+            diceArea.innerHTML = ''; 
             values.forEach(value => {
                 const dieElement = createDieElement(value);
                 diceArea.appendChild(dieElement);
@@ -364,13 +382,12 @@
 
         // Function to handle the dice roll
         function handleRoll() {
-            rollButton.disabled = true; // Disable button during roll
+            rollButton.disabled = true; 
             resultText.textContent = "Rolling...";
 
             let diceValues = [];
             let totalValue = 0;
 
-            // Clear previous dice and add rolling animation class
             diceArea.innerHTML = '';
             for (let i = 0; i < numberOfDice; i++) {
                 const tempDie = createDieElement(Math.floor(Math.random() * 6) + 1); 
