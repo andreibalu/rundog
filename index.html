@@ -100,6 +100,7 @@
 
         h1 { 
             color: var(--primary-color);
+            /* Default strong glow for larger screens */
             text-shadow: 0 0 6px var(--primary-color), 0 0 12px var(--accent-color), 0 0 2px #000; 
             margin-top: 0; 
             margin-bottom: 20px; 
@@ -269,8 +270,10 @@
             h1 { 
                 font-size: 1.2em; 
                 margin-bottom: 15px;
-                /* Softer glow for mobile title */
-                text-shadow: 0 0 3px var(--primary-color), 0 0 5px rgba(255,255,0,0.6), 1px 1px 1px rgba(0,0,0,0.7);
+                /* Further reduced pink glow, slightly softer yellow glow for mobile title */
+                text-shadow: 0 0 2px rgba(255,0,255,0.7), /* Reduced pink glow size and opacity */
+                             0 0 4px rgba(255,255,0,0.5),  /* Reduced yellow glow */
+                             1px 1px 1px rgba(0,0,0,0.6); /* Kept dark shadow for definition */
             }
             .game-container {
                 padding: 15px;
@@ -289,8 +292,10 @@
              h1 {
                 font-size: 1.0em; 
                 line-height: 1.1;
-                 /* Softer glow for mobile title - consistent with 480px */
-                text-shadow: 0 0 3px var(--primary-color), 0 0 5px rgba(255,255,0,0.6), 1px 1px 1px rgba(0,0,0,0.7);
+                 /* Consistent very subtle glow for smallest screens */
+                text-shadow: 0 0 1px rgba(255,0,255,0.6), /* Very subtle pink */
+                             0 0 3px rgba(255,255,0,0.4),  /* Very subtle yellow */
+                             1px 1px 1px rgba(0,0,0,0.5);
              }
             .game-container {
                  transform: perspective(800px) rotateX(0.5deg) rotateY(0deg) scale(0.97);
