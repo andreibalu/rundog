@@ -9,6 +9,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Retro Runner">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- Add Font Awesome for themed dice -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
             --background-color: #1a0a1f; /* Deep purple */
@@ -22,6 +24,39 @@
             --glow-strong: 0 0 15px var(--primary-color), 0 0 20px var(--primary-color), 0 0 25px var(--primary-color);
             --glow-medium: 0 0 8px var(--secondary-color), 0 0 12px var(--secondary-color);
             --glow-soft: 0 0 5px var(--accent-color);
+            
+            /* Theme transitions */
+            --theme-transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* Theme styles - Space Theme */
+        body.theme-space {
+            --background-color: #050520; /* Deep space blue */
+            --primary-color: #4287f5;    /* Space blue */
+            --secondary-color: #8a2be2;  /* Purple */
+            --accent-color: #f0f0f0;     /* Star white */
+            --dice-bg: #101035;
+            --dice-dot: #f0f0f0;
+        }
+
+        /* Theme styles - Fantasy Theme */
+        body.theme-fantasy {
+            --background-color: #2c1a0a; /* Forest brown */
+            --primary-color: #66cc33;    /* Forest green */
+            --secondary-color: #f5a142;  /* Magic orange */
+            --accent-color: #f5e642;     /* Gold */
+            --dice-bg: #352414;
+            --dice-dot: #f5a142;
+        }
+
+        /* Theme styles - Fire Theme */
+        body.theme-fire {
+            --background-color: #300808; /* Dark red */
+            --primary-color: #ff4500;    /* Fire orange */
+            --secondary-color: #ffd700;  /* Gold */
+            --accent-color: #ff0000;     /* Bright red */
+            --dice-bg: #500;
+            --dice-dot: #ff4500;
         }
 
         html {
@@ -45,6 +80,7 @@
             box-sizing: border-box; 
             overflow: hidden; 
             position: relative; 
+            transition: var(--theme-transition);
         }
 
         body::before {
@@ -115,8 +151,8 @@
             color: var(--primary-color);
             /* Default glow for larger screens, aiming for clarity */
             text-shadow: 0 0 3px var(--primary-color), /* Inner glow */
-                         0 0 1px var(--primary-color), /* Outer glow */
-                         1px 1px 1px rgba(0,0,0,0.5);  /* Definition shadow */
+                         0 0 7px var(--primary-color), /* Outer glow */
+                         1px 1px 1px rgba(0,0,0,0.8);  /* Definition shadow */
             margin-top: 0; 
             margin-bottom: 15px; /* Restored reasonable margin */
             font-size: 1.6em; 
@@ -320,11 +356,181 @@
              .dot { width: 7px; height: 7px; }
              .toggle-button { font-size: 0.65em; padding: 5px 7px; }
              .roll-button { font-size: 0.75em; padding: 8px 15px;}
+        }        /* Added styles for themed dice */
+        .themed-icon {
+            color: var(--dice-dot);
+            font-size: 16px;
+            text-shadow: 0 0 5px var(--dice-dot);
+        }
+        
+        .theme-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .themed-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
+        /* Added styles for special combinations */
+        .special-combo {
+            animation: special-combo-animation 1s ease-in-out infinite;
+        }
+
+        @keyframes special-combo-animation {
+            0% { transform: scale(1); box-shadow: 0 0 10px var(--primary-color); }
+            50% { transform: scale(1.05); box-shadow: 0 0 20px var(--accent-color), 0 0 30px var(--accent-color); }
+            100% { transform: scale(1); box-shadow: 0 0 10px var(--primary-color); }
+        }
+
+        /* Theme selector styles */
+        .theme-selector {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .theme-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid var(--text-color);
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .theme-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .theme-button.theme-retro {
+            background: linear-gradient(45deg, #1a0a1f, #ff00ff);
+        }
+
+        .theme-button.theme-space {
+            background: linear-gradient(45deg, #050520, #4287f5);
+        }
+
+        .theme-button.theme-fantasy {
+            background: linear-gradient(45deg, #2c1a0a, #66cc33);
+        }
+
+        .theme-button.theme-fire {
+            background: linear-gradient(45deg, #300808, #ff4500);
+        }
+
+        .theme-button.locked {
+            filter: grayscale(100%);
+            opacity: 0.5;
+            cursor: not-allowed;
+            position: relative;
+        }
+
+        .theme-button.locked::after {
+            content: "🔒";
+            position: absolute;
+            font-size: 12px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Dice set styles */
+        .dice-set-selector {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .dice-set-button {
+            background-color: var(--dice-bg);
+            color: var(--dice-dot);
+            border: 1px solid var(--secondary-color);
+            border-radius: 5px;
+            padding: 5px 8px;
+            font-size: 0.7em;
+            font-family: 'Press Start 2P', cursive;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .dice-set-button:hover {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            transform: scale(1.05);
+        }
+
+        .dice-set-button.active {
+            background-color: var(--accent-color);
+            color: var(--background-color);
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        /* Unlock notification */
+        .unlock-notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--accent-color);
+            color: var(--background-color);
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 15px var(--accent-color);
+            z-index: 1000;
+            font-size: 0.8em;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+        }
+
+        .unlock-notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(10px);
+        }        /* Special combo notification */
+        .combo-notification {
+            color: var(--accent-color);
+            font-size: 1.2em;
+            text-shadow: 0 0 10px var(--accent-color);
+            animation: combo-animation 0.5s ease-in-out infinite;
+            margin-top: 5px;
+            max-width: 100%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            padding: 0 10px;
+            box-sizing: border-box;
+            white-space: normal; /* Prevents horizontal scrollbar */
+        }
+
+        @keyframes combo-animation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
-<body>
+<body>    <div class="unlock-notification" id="unlock-notification">Theme unlocked!</div>
+
+    <div class="theme-selector">
+        <div class="theme-button theme-retro" data-theme="retro" title="Retro Theme"></div>
+        <div class="theme-button theme-space locked" data-theme="space" title="Space Theme (Locked: Roll 10 times)" data-unlock-at="10"></div>
+        <div class="theme-button theme-fantasy locked" data-theme="fantasy" title="Fantasy Theme (Locked: Roll 20 times)" data-unlock-at="20"></div>
+        <div class="theme-button theme-fire locked" data-theme="fire" title="Fire Theme (Locked: Roll 30 times)" data-unlock-at="30"></div>
+    </div>
+
     <div class="game-container">
         <h1>Ia si alearga caine</h1>
         
@@ -333,14 +539,20 @@
                 <button class="toggle-button active" id="dice-count-2" data-count="2">2 Dice</button>
                 <button class="toggle-button" id="dice-count-3" data-count="3">3 Dice</button>
             </div>
-        </div>
-
-        <div class="dice-area" id="dice-area">
+            
+            <div class="dice-set-selector">
+                <button class="dice-set-button active" data-set="numbers">Classic</button>
+                <button class="dice-set-button" data-set="space">Space</button>
+                <button class="dice-set-button" data-set="fantasy">Fantasy</button>
+                <button class="dice-set-button" data-set="emoji">Emoji</button>
+            </div>
+        </div>        <div class="dice-area" id="dice-area">
             </div>
 
         <button class="roll-button" id="roll-button">Roll for Run!</button>
 
         <p id="result-text">Roll the dice to see your fate!</p>
+        <div id="combo-text" class="combo-notification"></div>
 
         </div>
 
@@ -348,21 +560,115 @@
         const diceArea = document.getElementById('dice-area');
         const rollButton = document.getElementById('roll-button');
         const resultText = document.getElementById('result-text');
-        const diceCountButtons = [document.getElementById('dice-count-2'), document.getElementById('dice-count-3')];
+        const comboText = document.getElementById('combo-text');        const diceCountButtons = [document.getElementById('dice-count-2'), document.getElementById('dice-count-3')];
+        const unlockNotification = document.getElementById('unlock-notification');
+        const themeButtons = document.querySelectorAll('.theme-button');
+        const diceSetButtons = document.querySelectorAll('.dice-set-button');
         
         let numberOfDice = 2; 
+        let rollCount = localStorage.getItem('rollCount') ? parseInt(localStorage.getItem('rollCount')) : 0;
+        let currentTheme = localStorage.getItem('currentTheme') || 'retro';
+        let currentDiceSet = localStorage.getItem('currentDiceSet') || 'numbers';
+        let unlockedThemes = localStorage.getItem('unlockedThemes') ? 
+                             JSON.parse(localStorage.getItem('unlockedThemes')) : ['retro'];
 
-        // Function to create a single die element
+        // Check previously unlocked themes
+        function initThemes() {
+            document.body.className = `theme-${currentTheme}`;
+            
+            themeButtons.forEach(button => {
+                const theme = button.dataset.theme;
+                if (unlockedThemes.includes(theme)) {
+                    button.classList.remove('locked');
+                    button.removeAttribute('data-unlock-at');
+                    button.title = `${theme.charAt(0).toUpperCase() + theme.slice(1)} Theme`;
+                }
+                
+                if (theme === currentTheme) {
+                    button.style.border = '3px solid var(--text-color)';
+                }
+            });
+        }
+
+        // Initialize dice sets
+        function initDiceSets() {
+            diceSetButtons.forEach(button => {
+                if (button.dataset.set === currentDiceSet) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        }
+
+        // Dice face definitions for different sets
+        const diceSets = {
+            numbers: {
+                1: ['dot'],
+                2: ['dot', 'dot'],
+                3: ['dot', 'dot', 'dot'],
+                4: ['dot', 'dot', 'dot', 'dot'],
+                5: ['dot', 'dot', 'dot', 'dot', 'dot'],
+                6: ['dot', 'dot', 'dot', 'dot', 'dot', 'dot']
+            },
+            space: {
+                1: ['<i class="fas fa-rocket themed-icon"></i>'],
+                2: ['<i class="fas fa-star themed-icon"></i>', '<i class="fas fa-moon themed-icon"></i>'],
+                3: ['<i class="fas fa-rocket themed-icon"></i>', '<i class="fas fa-star themed-icon"></i>', '<i class="fas fa-meteor themed-icon"></i>'],
+                4: ['<i class="fas fa-rocket themed-icon"></i>', '<i class="fas fa-star themed-icon"></i>', '<i class="fas fa-meteor themed-icon"></i>', '<i class="fas fa-planet-ringed themed-icon"></i>'],
+                5: ['<i class="fas fa-rocket themed-icon"></i>', '<i class="fas fa-star themed-icon"></i>', '<i class="fas fa-meteor themed-icon"></i>', '<i class="fas fa-satellite themed-icon"></i>', '<i class="fas fa-globe themed-icon"></i>'],
+                6: ['<i class="fas fa-rocket themed-icon"></i>', '<i class="fas fa-star themed-icon"></i>', '<i class="fas fa-meteor themed-icon"></i>', '<i class="fas fa-satellite themed-icon"></i>', '<i class="fas fa-globe themed-icon"></i>', '<i class="fas fa-moon themed-icon"></i>']
+            },
+            fantasy: {
+                1: ['<i class="fas fa-dragon themed-icon"></i>'],
+                2: ['<i class="fas fa-dragon themed-icon"></i>', '<i class="fas fa-hat-wizard themed-icon"></i>'],
+                3: ['<i class="fas fa-dragon themed-icon"></i>', '<i class="fas fa-hat-wizard themed-icon"></i>', '<i class="fas fa-shield-alt themed-icon"></i>'],
+                4: ['<i class="fas fa-dragon themed-icon"></i>', '<i class="fas fa-hat-wizard themed-icon"></i>', '<i class="fas fa-shield-alt themed-icon"></i>', '<i class="fas fa-scroll themed-icon"></i>'],
+                5: ['<i class="fas fa-dragon themed-icon"></i>', '<i class="fas fa-hat-wizard themed-icon"></i>', '<i class="fas fa-shield-alt themed-icon"></i>', '<i class="fas fa-scroll themed-icon"></i>', '<i class="fas fa-gem themed-icon"></i>'],
+                6: ['<i class="fas fa-dragon themed-icon"></i>', '<i class="fas fa-hat-wizard themed-icon"></i>', '<i class="fas fa-shield-alt themed-icon"></i>', '<i class="fas fa-scroll themed-icon"></i>', '<i class="fas fa-gem themed-icon"></i>', '<i class="fas fa-crown themed-icon"></i>']
+            },
+            emoji: {
+                1: ['<span class="themed-icon">🏃</span>'],
+                2: ['<span class="themed-icon">🏃</span>', '<span class="themed-icon">🐕</span>'],
+                3: ['<span class="themed-icon">🏃</span>', '<span class="themed-icon">🐕</span>', '<span class="themed-icon">🏆</span>'],
+                4: ['<span class="themed-icon">🏃</span>', '<span class="themed-icon">🐕</span>', '<span class="themed-icon">🏆</span>', '<span class="themed-icon">🔥</span>'],
+                5: ['<span class="themed-icon">🏃</span>', '<span class="themed-icon">🐕</span>', '<span class="themed-icon">🏆</span>', '<span class="themed-icon">🔥</span>', '<span class="themed-icon">💪</span>'],
+                6: ['<span class="themed-icon">🏃</span>', '<span class="themed-icon">🐕</span>', '<span class="themed-icon">🏆</span>', '<span class="themed-icon">🔥</span>', '<span class="themed-icon">💪</span>', '<span class="themed-icon">🌟</span>']
+            }
+        };        // Function to create a single die element
         function createDieElement(value) {
             const die = document.createElement('div');
             die.classList.add('dice');
             die.dataset.value = value; 
 
-            for (let i = 0; i < value; i++) {
-                const dot = document.createElement('div');
-                dot.classList.add('dot');
-                die.appendChild(dot);
+            const diceContent = diceSets[currentDiceSet][value];
+            
+            if (diceContent) {
+                // For themed dice sets, use a different layout approach
+                if (currentDiceSet !== 'numbers') {
+                    // Create a container for themed content that centers it in the dice
+                    const themeContainer = document.createElement('div');
+                    themeContainer.className = 'theme-container';
+                    
+                    // Add all the themed content to the container
+                    diceContent.forEach(item => {
+                        const itemElement = document.createElement('div');
+                        itemElement.className = 'themed-item';
+                        itemElement.innerHTML = item;
+                        themeContainer.appendChild(itemElement);
+                    });
+                    
+                    die.appendChild(themeContainer);
+                } else {
+                    // Original dots for the numbers theme
+                    diceContent.forEach(item => {
+                        const dot = document.createElement('div');
+                        dot.classList.add('dot');
+                        die.appendChild(dot);
+                    });
+                }
             }
+            
             return die;
         }
 
@@ -378,14 +684,92 @@
         // Function to simulate rolling a single die
         function rollSingleDie() {
             return Math.floor(Math.random() * 6) + 1;
+        }        // Function to check for special combinations
+        function checkSpecialCombinations(diceValues) {
+            const counts = {};
+            diceValues.forEach(val => counts[val] = (counts[val] || 0) + 1);
+            
+            // Check for pairs, triples, etc.
+            let maxCount = Math.max(...Object.values(counts));
+            
+            if (maxCount === diceValues.length && diceValues.length > 1) {
+                // All dice show the same value
+                const diceValue = diceValues[0];
+                let bonusKm = 0;
+                
+                // Simple bonus: +1 km for doubles, +2 km for triples
+                if (diceValues.length === 2) {
+                    bonusKm = 1;
+                } else if (diceValues.length === 3) {
+                    bonusKm = 2;
+                }
+                
+                return {
+                    type: 'all-same',
+                    message: `JACKPOT! +${bonusKm} km bonus!`,
+                    bonus: true,
+                    add: bonusKm
+                };
+            } else if (diceValues.length >= 2 && maxCount >= 2) {
+                // At least a pair but not all dice
+                const pairValue = parseInt(Object.keys(counts).find(key => counts[key] >= 2));
+                return {
+                    type: 'pair',
+                    message: `Pair of ${pairValue}s! Nice rhythm!`,
+                    bonus: false
+                };
+            }
+            
+            return { type: 'none', message: '', bonus: false };
+        }
+
+        // Function to show unlock notification
+        function showUnlockNotification(message) {
+            unlockNotification.textContent = message;
+            unlockNotification.classList.add('show');
+            
+            setTimeout(() => {
+                unlockNotification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Function to check and unlock themes based on roll count
+        function checkUnlockables() {
+            themeButtons.forEach(button => {
+                if (button.classList.contains('locked') && button.dataset.unlockAt) {
+                    const unlockAt = parseInt(button.dataset.unlockAt);
+                    if (rollCount >= unlockAt) {
+                        button.classList.remove('locked');
+                        button.removeAttribute('data-unlock-at');
+                        const theme = button.dataset.theme;
+                        button.title = `${theme.charAt(0).toUpperCase() + theme.slice(1)} Theme`;
+                        
+                        if (!unlockedThemes.includes(theme)) {
+                            unlockedThemes.push(theme);
+                            localStorage.setItem('unlockedThemes', JSON.stringify(unlockedThemes));
+                            showUnlockNotification(`${theme.charAt(0).toUpperCase() + theme.slice(1)} Theme Unlocked!`);
+                        }
+                    }
+                }
+            });
+        }        // Function placeholder for future functionality
+        function placeholderFunction() {
+            // This function replaces the former sound function
         }
 
         // Function to handle the dice roll
         function handleRoll() {
             rollButton.disabled = true; 
             resultText.textContent = "Rolling...";
-
-            let diceValues = [];
+            comboText.textContent = "";
+            
+            // Increment and save roll count
+            rollCount++;
+            localStorage.setItem('rollCount', rollCount);
+            
+            // Check for unlockables
+            checkUnlockables();
+              let diceValues = [];
             let totalValue = 0;
 
             diceArea.innerHTML = '';
@@ -402,9 +786,32 @@
                     diceValues.push(value);
                     totalValue += value;
                 }
-                renderDice(diceValues); 
                 
-                resultText.textContent = `You rolled ${diceValues.join(' + ')} = ${totalValue}! Run ${totalValue} km!`;
+                // Check for special combinations
+                const specialCombo = checkSpecialCombinations(diceValues);
+                  // Apply bonus effects if any
+                let finalTotal = totalValue;
+                if (specialCombo.bonus) {
+                    if (specialCombo.multiplier) {
+                        finalTotal = Math.round(totalValue * specialCombo.multiplier);
+                    }
+                    if (specialCombo.add) {
+                        finalTotal = totalValue + specialCombo.add;
+                    }
+                      // Add visual effects to dice for special combos
+                    setTimeout(() => {
+                        const diceElements = document.querySelectorAll('.dice');
+                        diceElements.forEach(die => die.classList.add('special-combo'));
+                    }, 200);                }
+                
+                renderDice(diceValues);
+                
+                resultText.textContent = `You rolled ${diceValues.join(' + ')} = ${totalValue}! Run ${finalTotal} km!`;
+                
+                if (specialCombo.message) {
+                    comboText.textContent = specialCombo.message;
+                }
+                
                 rollButton.disabled = false; 
             }, 700); 
         }
@@ -423,10 +830,61 @@
                 const initialValues = Array(numberOfDice).fill(0).map(() => rollSingleDie()); 
                 renderDice(initialValues);
                 resultText.textContent = `Switched to ${numberOfDice} dice. Roll 'em!`;
+                comboText.textContent = "";
+            });
+        });
+        
+        // Theme button event listeners
+        themeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const theme = button.dataset.theme;
+                
+                // Check if theme is locked
+                if (button.classList.contains('locked')) {
+                    const unlockAt = parseInt(button.dataset.unlockAt);
+                    resultText.textContent = `Theme locked! Roll ${unlockAt - rollCount} more times to unlock.`;
+                    return;
+                }
+                
+                // Apply selected theme
+                document.body.className = `theme-${theme}`;
+                currentTheme = theme;
+                localStorage.setItem('currentTheme', theme);
+                
+                // Update button styling
+                themeButtons.forEach(btn => {
+                    btn.style.border = btn.dataset.theme === theme ? 
+                        '3px solid var(--text-color)' : '2px solid var(--text-color)';
+                });
+                
+                resultText.textContent = `${theme.charAt(0).toUpperCase() + theme.slice(1)} theme activated!`;
+            });
+        });
+        
+        // Dice set button event listeners
+        diceSetButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (button.classList.contains('active')) return;
+                
+                diceSetButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                currentDiceSet = button.dataset.set;
+                localStorage.setItem('currentDiceSet', currentDiceSet);
+                
+                const initialValues = Array(numberOfDice).fill(0).map(() => rollSingleDie()); 
+                renderDice(initialValues);
+                resultText.textContent = `Switched to ${currentDiceSet} dice set!`;
             });
         });
 
         function initializeDice() {
+            // Initialize themes
+            initThemes();
+            
+            // Initialize dice sets
+            initDiceSets();
+            
             const initialValues = Array(numberOfDice).fill(0).map(() => rollSingleDie());
             renderDice(initialValues);
             diceCountButtons.forEach(btn => btn.classList.remove('active'));
