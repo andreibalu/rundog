@@ -8,199 +8,136 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Retro Runner">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              'press-start': ['"Press Start 2P"', 'cursive'],
+            },
+            colors: {
+              'theme-primary': 'var(--primary-color)',
+              'theme-secondary': 'var(--secondary-color)',
+              'theme-accent': 'var(--accent-color)',
+              'theme-background': 'var(--background-color)',
+              'theme-text': 'var(--text-color)',
+              'theme-dice-bg': 'var(--dice-bg)',
+              'theme-dice-dot': 'var(--dice-dot)',
+            },
+            keyframes: {
+              'crt-flicker': {
+                '0%': { opacity: '0.95' },
+                '100%': { opacity: '1' },
+              },
+              'roll-animation': {
+                '0%': { transform: 'rotate(0deg) scale(1) translateZ(0)', boxShadow: '0 0 8px var(--secondary-color), inset 0 0 8px rgba(0,0,0,0.6)' },
+                '25%': { transform: 'rotate(90deg) scale(1.15) translateZ(10px)', boxShadow: '0 0 12px var(--primary-color), inset 0 0 10px rgba(0,0,0,0.5)' },
+                '50%': { transform: 'rotate(180deg) scale(0.9) translateZ(5px)' },
+                '75%': { transform: 'rotate(270deg) scale(1.15) translateZ(10px)', boxShadow: '0 0 12px var(--accent-color), inset 0 0 10px rgba(0,0,0,0.5)' },
+                '100%': { transform: 'rotate(360deg) scale(1) translateZ(0)', boxShadow: '0 0 8px var(--secondary-color), inset 0 0 8px rgba(0,0,0,0.6)' },
+              },
+              'special-combo-animation': {
+                '0%': { transform: 'scale(1)', boxShadow: '0 0 10px var(--primary-color)' },
+                '50%': { transform: 'scale(1.05)', boxShadow: '0 0 20px var(--accent-color), 0 0 30px var(--accent-color)' },
+                '100%': { transform: 'scale(1)', boxShadow: '0 0 10px var(--primary-color)' },
+              },
+              'combo-animation': {
+                '0%': { transform: 'scale(1)' },
+                '50%': { transform: 'scale(1.1)' },
+                '100%': { transform: 'scale(1)' },
+              }
+            },
+            animation: {
+              'crt-flicker': 'crt-flicker 0.12s infinite alternate',
+              'roll-dice': 'roll-animation 0.5s ease-out',
+              'special-combo': 'special-combo-animation 1s ease-in-out infinite',
+              'combo-notify': 'combo-animation 0.5s ease-in-out infinite',
+            },
+          },
+        },
+        plugins: [],
+      }
+    </script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <!-- Add Font Awesome for themed dice -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"> 
     <style>
         :root {
-            --background-color: #1a0a1f; /* Deep purple */
-            --primary-color: #ff00ff;    /* Magenta */
-            --secondary-color: #00ffff;  /* Cyan */
-            --accent-color: #ffff00;     /* Yellow */
+            --background-color: #1a0a1f;
+            --primary-color: #ff00ff;
+            --secondary-color: #00ffff;
+            --accent-color: #ffff00;
             --text-color: #e0e0e0;
             --dice-bg: #2c1a3e;
-            --dice-dot: #00ffff;
+            --dice-dot: #00ffff; 
             --crt-lines-color: rgba(0, 0, 0, 0.2); 
             --glow-strong: 0 0 15px var(--primary-color), 0 0 20px var(--primary-color), 0 0 25px var(--primary-color);
             --glow-medium: 0 0 8px var(--secondary-color), 0 0 12px var(--secondary-color);
             --glow-soft: 0 0 5px var(--accent-color);
-            
-            /* Theme transitions */
-            --theme-transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        /* Theme styles - Space Theme */
         body.theme-space {
-            --background-color: #050520; /* Deep space blue */
-            --primary-color: #4287f5;    /* Space blue */
-            --secondary-color: #8a2be2;  /* Purple */
-            --accent-color: #f0f0f0;     /* Star white */
-            --dice-bg: #101035;
-            --dice-dot: #f0f0f0;
+            --background-color: #050520; --primary-color: #4287f5; --secondary-color: #8a2be2;
+            --accent-color: #f0f0f0; --dice-bg: #101035; --dice-dot: #f0f0f0;
         }
-
-        /* Theme styles - Fantasy Theme */
         body.theme-fantasy {
-            --background-color: #2c1a0a; /* Forest brown */
-            --primary-color: #66cc33;    /* Forest green */
-            --secondary-color: #f5a142;  /* Magic orange */
-            --accent-color: #f5e642;     /* Gold */
-            --dice-bg: #352414;
-            --dice-dot: #f5a142;
+            --background-color: #2c1a0a; --primary-color: #66cc33; --secondary-color: #f5a142;
+            --accent-color: #f5e642; --dice-bg: #352414; --dice-dot: #f5a142;
         }
-
-        /* Theme styles - Fire Theme */
         body.theme-fire {
-            --background-color: #300808; /* Dark red */
-            --primary-color: #ff4500;    /* Fire orange */
-            --secondary-color: #ffd700;  /* Gold */
-            --accent-color: #ff0000;     /* Bright red */
-            --dice-bg: #500;
-            --dice-dot: #ff4500;
-        }
-
-        html {
-            height: 100%;
-            box-sizing: border-box;
+            --background-color: #300808; --primary-color: #ff4500; --secondary-color: #ffd700;
+            --accent-color: #ff0000; --dice-bg: #500; --dice-dot: #ff4500;
         }
 
         body {
-            font-family: 'Press Start 2P', cursive;
-            background-color: var(--background-color);
             background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E"),
                               linear-gradient(var(--background-color), var(--background-color));
-            color: var(--text-color);
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            height: 100%; 
-            margin: 0;
-            padding: 10px; 
-            box-sizing: border-box; 
-            overflow: hidden; 
-            position: relative; 
-            transition: var(--theme-transition);
+            transition: background-color 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-
         body::before {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
+            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(transparent 50%, var(--crt-lines-color) 50%), linear-gradient(90deg, transparent 50%, var(--crt-lines-color) 50%);
             background-size: 100% 3px, 3px 100%; 
-            z-index: 2; 
-            pointer-events: none;
-            animation: crt-flicker 0.12s infinite alternate; 
+            z-index: 20; pointer-events: none; animation: crt-flicker 0.12s infinite alternate;
         }
-        
-        @keyframes crt-flicker { 
-            0% { opacity: 0.95; }
-            100% { opacity: 1; }
-        }
-
         body::after {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: -5%; 
-            left: -5%;
-            height: 110%;
-            width: 110%;
-            background: radial-gradient(ellipse at center, 
-                rgba(20, 0, 30, 0) 30%, 
-                rgba(10, 0, 20, 0.6) 75%, 
-                rgba(5, 0, 10, 0.9) 100%);
-            z-index: 3; 
-            pointer-events: none;
-            opacity: 0.85; 
-            border-radius: 50px; 
+            content: " "; display: block; position: absolute; top: -5%; left: -5%;
+            height: 110%; width: 110%;
+            background: radial-gradient(ellipse at center, rgba(20,0,30,0) 30%, rgba(10,0,20,0.6) 75%, rgba(5,0,10,0.9) 100%);
+            z-index: 30; pointer-events: none; opacity: 0.85; border-radius: 50px;
         }
-
         .game-container {
-            background-color: rgba(10, 5, 15, 0.85); 
-            border-radius: 15px;
-            border: 3px solid var(--primary-color);
-            box-shadow: var(--glow-strong), 
-                        inset 0 0 15px rgba(0, 255, 255, 0.3), 
-                        0 0 30px rgba(0,0,0,0.5), 
-                        0 0 70px rgba(10,0,20,0.7); 
-            text-align: center;
-            width: 100%; 
-            max-width: 500px; 
-            height: 100%; 
-            max-height: 95vh; 
-            z-index: 5; 
-            position: relative;
-            transform: perspective(1200px) rotateX(1.5deg) rotateY(-1deg) scale(0.97);
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
-            
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around; 
-            padding: clamp(10px, 3vh, 20px) 20px; /* Responsive top/bottom padding */
-            box-sizing: border-box; 
-            overflow-y: auto; 
+            box-shadow: var(--glow-strong), inset 0 0 15px rgba(0,255,255,0.3), 0 0 30px rgba(0,0,0,0.5), 0 0 70px rgba(10,0,20,0.7); 
         }
-
-        h1 { 
-            color: var(--primary-color);
-            /* Default glow for larger screens, aiming for clarity */
-            text-shadow: 0 0 3px var(--primary-color), /* Inner glow */
-                         0 0 7px var(--primary-color), /* Outer glow */
-                         1px 1px 1px rgba(0,0,0,0.8);  /* Definition shadow */
-            margin-top: 0; 
-            margin-bottom: 15px; /* Restored reasonable margin */
-            font-size: 1.6em; 
-            line-height: 1.2; 
-            word-break: break-word; 
-        }
-
-        .dice-area {
-            display: flex;
-            justify-content: center;
-            gap: 15px; 
-            margin-bottom: 20px; /* Restored reasonable margin */
-            min-height: 70px; 
-        }
-
         .dice {
-            width: 60px; 
-            height: 60px; 
-            background-color: var(--dice-bg);
-            border: 2px solid var(--secondary-color);
-            border-radius: 8px; 
-            display: grid;
-            padding: 4px; 
-            box-shadow: 0 0 7px var(--secondary-color), inset 0 0 7px rgba(0,0,0,0.6); 
-            transition: transform 0.3s ease-out, box-shadow 0.3s ease;
+             box-shadow: 0 0 7px var(--secondary-color), inset 0 0 7px rgba(0,0,0,0.6);
+        }
+        h1 { text-shadow: 0 0 3px var(--primary-color), 0 0 7px var(--primary-color), 1px 1px 1px rgba(0,0,0,0.8); }
+        #result-text { text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color), 1px 1px 0px #000; }
+        
+        /* Updated selector for SVG drop shadow */
+        .themed-pip > svg.themed-icon {
+            filter: drop-shadow(0 0 3px var(--dice-dot));
         }
 
-        .dice.rolling {
-            animation: roll-animation 0.5s ease-out;
+        .toggle-button { text-shadow: 0 0 3px var(--secondary-color); }
+        .toggle-button:hover { text-shadow: 0 0 5px var(--accent-color); }
+        .toggle-button.active { text-shadow: none; box-shadow: 0 0 8px var(--primary-color); }
+        .roll-button {
+            text-shadow: 1px 1px 0px rgba(0,0,0,0.7); 
+            box-shadow: 0 0 12px var(--primary-color), 0 0 18px var(--primary-color), 0 4px 8px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.2); 
         }
-
-        @keyframes roll-animation {
-            0% { transform: rotate(0deg) scale(1) translateZ(0); box-shadow: 0 0 8px var(--secondary-color), inset 0 0 8px rgba(0,0,0,0.6); }
-            25% { transform: rotate(90deg) scale(1.15) translateZ(10px); box-shadow: 0 0 12px var(--primary-color), inset 0 0 10px rgba(0,0,0,0.5); }
-            50% { transform: rotate(180deg) scale(0.9) translateZ(5px); }
-            75% { transform: rotate(270deg) scale(1.15) translateZ(10px); box-shadow: 0 0 12px var(--accent-color), inset 0 0 10px rgba(0,0,0,0.5); }
-            100% { transform: rotate(360deg) scale(1) translateZ(0); box-shadow: 0 0 8px var(--secondary-color), inset 0 0 8px rgba(0,0,0,0.6); }
+        .roll-button:hover {
+            text-shadow: 1px 1px 0px rgba(0,0,0,0.5);
+            box-shadow: 0 0 15px var(--accent-color), 0 0 25px var(--accent-color), 0 6px 12px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.3);
         }
-
-        .dot {
-            width: 10px; 
-            height: 10px; 
-            background-color: var(--dice-dot);
-            border-radius: 50%;
-            box-shadow: var(--glow-soft), 0 0 3px var(--dice-dot); 
-            align-self: center;
-            justify-self: center;
-        }
+        .roll-button:active { box-shadow: 0 0 5px var(--primary-color), inset 0 2px 8px rgba(0,0,0,0.5); }
+        .combo-notification { text-shadow: 0 0 10px var(--accent-color); }
+        .dice-set-button.active { box-shadow: 0 0 10px var(--accent-color); }
+        .theme-button:hover { box-shadow: 0 0 10px var(--accent-color); }
+        .unlock-notification { box-shadow: 0 0 15px var(--accent-color); }
 
         .dice[data-value="1"] { grid-template-areas: ". . ." ". a ." ". . ."; }
         .dice[data-value="2"] { grid-template-areas: "a . ." ". . ." ". . b"; }
@@ -209,358 +146,75 @@
         .dice[data-value="5"] { grid-template-areas: "a . b" ". c ." "d . e"; }
         .dice[data-value="6"] { grid-template-areas: "a . b" "c . d" "e . f"; }
 
-        .dice[data-value="1"] .dot:nth-child(1) { grid-area: a; }
-        .dice[data-value="2"] .dot:nth-child(1) { grid-area: a; }
-        .dice[data-value="2"] .dot:nth-child(2) { grid-area: b; }
-        .dice[data-value="3"] .dot:nth-child(1) { grid-area: a; }
-        .dice[data-value="3"] .dot:nth-child(2) { grid-area: b; }
-        .dice[data-value="3"] .dot:nth-child(3) { grid-area: c; }
-        .dice[data-value="4"] .dot:nth-child(1) { grid-area: a; }
-        .dice[data-value="4"] .dot:nth-child(2) { grid-area: b; }
-        .dice[data-value="4"] .dot:nth-child(3) { grid-area: c; }
-        .dice[data-value="4"] .dot:nth-child(4) { grid-area: d; }
-        .dice[data-value="5"] .dot:nth-child(1) { grid-area: a; }
-        .dice[data-value="5"] .dot:nth-child(2) { grid-area: b; }
-        .dice[data-value="5"] .dot:nth-child(3) { grid-area: c; }
-        .dice[data-value="5"] .dot:nth-child(4) { grid-area: d; }
-        .dice[data-value="5"] .dot:nth-child(5) { grid-area: e; }
-        .dice[data-value="6"] .dot:nth-child(1) { grid-area: a; }
-        .dice[data-value="6"] .dot:nth-child(2) { grid-area: b; }
-        .dice[data-value="6"] .dot:nth-child(3) { grid-area: c; }
-        .dice[data-value="6"] .dot:nth-child(4) { grid-area: d; }
-        .dice[data-value="6"] .dot:nth-child(5) { grid-area: e; }
-        .dice[data-value="6"] .dot:nth-child(6) { grid-area: f; }
-
-        .controls {
-            margin-bottom: 15px; /* Restored reasonable margin */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px; 
-        }
-        
-        .toggle-button-container {
-            display: flex;
-            gap: 8px; 
-            background-color: var(--dice-bg);
-            padding: 7px; 
-            border-radius: 7px; 
-            border: 1px solid var(--secondary-color);
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.4);
-        }
-
-        .toggle-button {
-            background-color: transparent;
-            color: var(--secondary-color);
-            border: 2px solid transparent; 
-            padding: 7px 10px; 
-            font-family: 'Press Start 2P', cursive;
-            cursor: pointer;
-            font-size: 0.75em; 
-            border-radius: 5px;
-            transition: background-color 0.2s, color 0.2s, text-shadow 0.2s, box-shadow 0.2s;
-            text-shadow: 0 0 3px var(--secondary-color);
-        }
-
-        .toggle-button:hover {
-            color: var(--accent-color);
-            text-shadow: 0 0 5px var(--accent-color);
-            background-color: rgba(255,255,0,0.1);
-        }
-        
-        .toggle-button.active {
-            background-color: var(--primary-color);
-            color: var(--background-color); 
-            border-color: var(--accent-color);
-            text-shadow: none; 
-            box-shadow: 0 0 8px var(--primary-color);
-        }
-
-        .roll-button {
-            background: linear-gradient(145deg, var(--primary-color), #c000c0); 
-            color: var(--text-color); 
-            border: 2px solid var(--accent-color); 
-            padding: 10px 20px; 
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.9em; 
-            cursor: pointer;
-            border-radius: 8px;
-            text-shadow: 1px 1px 0px rgba(0,0,0,0.7); 
-            box-shadow: 0 0 12px var(--primary-color), 0 0 18px var(--primary-color), 
-                        0 4px 8px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.2); 
-            transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.2s ease;
-            margin-top: 5px; 
-            margin-bottom: 5px;
-        }
-
-        .roll-button:hover {
-            background: linear-gradient(145deg, var(--accent-color), #d0d000);
-            color: var(--background-color);
-            border-color: var(--primary-color);
-            text-shadow: 1px 1px 0px rgba(0,0,0,0.5);
-            box-shadow: 0 0 15px var(--accent-color), 0 0 25px var(--accent-color),
-                        0 6px 12px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.3);
-            transform: translateY(-3px) scale(1.02); 
-        }
-        .roll-button:active {
-            transform: translateY(1px) scale(0.98);
-            box-shadow: 0 0 5px var(--primary-color), inset 0 2px 8px rgba(0,0,0,0.5);
-        }
-
-        #result-text {
-            margin-top: 10px; /* Restored reasonable margin */
-            margin-bottom: 10px; /* Added for balance */
-            font-size: 1.1em; 
-            color: var(--accent-color);
-            text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color), 1px 1px 0px #000; 
-            min-height: 1.5em; 
-            line-height: 1.3;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 480px) { 
-            h1 { 
-                font-size: 1.2em; 
-                margin-bottom: 10px; 
-                /* Refined pink glow for mobile: sharper inner, softer outer */
-                text-shadow: 0 0 2px rgba(255,0,255,0.9), /* Tighter, more opaque inner pink */
-                             0 0 5px rgba(255,0,255,0.5), /* Softer, wider outer pink */
-                             1px 1px 1px rgba(0,0,0,0.7);  /* Dark offset */
-            }
-            .game-container {
-                padding: clamp(10px, 2vh, 15px) 15px; 
-                transform: perspective(1000px) rotateX(1deg) rotateY(-0.5deg) scale(0.98); 
-            }
-            .dice { width: 50px; height: 50px; }
-            .dot { width: 8px; height: 8px; }
-            .roll-button { padding: 8px 15px; font-size: 0.8em; }
-            #result-text { font-size: 1em; }
-            .toggle-button { font-size: 0.7em; padding: 6px 8px; }
-            .dice-area { gap: 10px; min-height: 60px; margin-bottom: 15px;} 
-            .controls { margin-bottom: 10px; gap: 8px;} 
-        }
-
-        @media (max-width: 360px) { 
-             h1 {
-                font-size: 1.0em; 
-                line-height: 1.1;
-                /* Consistent subtle glow for smallest screens */
-                text-shadow: 0 0 1px rgba(255,0,255,0.8), /* Very tight inner pink */
-                             0 0 4px rgba(255,0,255,0.4), /* Softer outer pink */
-                             1px 1px 1px rgba(0,0,0,0.6);
-             }
-            .game-container {
-                 transform: perspective(800px) rotateX(0.5deg) rotateY(0deg) scale(0.97);
-            }
-             .dice { width: 45px; height: 45px; }
-             .dot { width: 7px; height: 7px; }
-             .toggle-button { font-size: 0.65em; padding: 5px 7px; }
-             .roll-button { font-size: 0.75em; padding: 8px 15px;}
-        }        /* Added styles for themed dice */
-        .themed-icon {
-            color: var(--dice-dot);
-            font-size: 16px;
-            text-shadow: 0 0 5px var(--dice-dot);
-        }
-        
-        .theme-container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .themed-item {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Added styles for special combinations */
-        .special-combo {
-            animation: special-combo-animation 1s ease-in-out infinite;
-        }
-
-        @keyframes special-combo-animation {
-            0% { transform: scale(1); box-shadow: 0 0 10px var(--primary-color); }
-            50% { transform: scale(1.05); box-shadow: 0 0 20px var(--accent-color), 0 0 30px var(--accent-color); }
-            100% { transform: scale(1); box-shadow: 0 0 10px var(--primary-color); }
-        }
-
-        /* Theme selector styles */
-        .theme-selector {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .theme-button {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid var(--text-color);
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .theme-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 10px var(--accent-color);
-        }
-
-        .theme-button.theme-retro {
-            background: linear-gradient(45deg, #1a0a1f, #ff00ff);
-        }
-
-        .theme-button.theme-space {
-            background: linear-gradient(45deg, #050520, #4287f5);
-        }
-
-        .theme-button.theme-fantasy {
-            background: linear-gradient(45deg, #2c1a0a, #66cc33);
-        }
-
-        .theme-button.theme-fire {
-            background: linear-gradient(45deg, #300808, #ff4500);
-        }
-
-        .theme-button.locked {
-            filter: grayscale(100%);
-            opacity: 0.5;
-            cursor: not-allowed;
-            position: relative;
-        }
-
-        .theme-button.locked::after {
-            content: "🔒";
-            position: absolute;
-            font-size: 12px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        /* Dice set styles */
-        .dice-set-selector {
-            margin-top: 10px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .dice-set-button {
-            background-color: var(--dice-bg);
-            color: var(--dice-dot);
-            border: 1px solid var(--secondary-color);
-            border-radius: 5px;
-            padding: 5px 8px;
-            font-size: 0.7em;
-            font-family: 'Press Start 2P', cursive;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.2s;
-        }
-
-        .dice-set-button:hover {
-            background-color: var(--primary-color);
-            color: var(--background-color);
-            transform: scale(1.05);
-        }
-
-        .dice-set-button.active {
-            background-color: var(--accent-color);
-            color: var(--background-color);
-            box-shadow: 0 0 10px var(--accent-color);
-        }
-
-        /* Unlock notification */
-        .unlock-notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--accent-color);
-            color: var(--background-color);
-            padding: 10px 15px;
-            border-radius: 5px;
-            box-shadow: 0 0 15px var(--accent-color);
-            z-index: 1000;
-            font-size: 0.8em;
-            opacity: 0;
-            transition: opacity 0.3s, transform 0.3s;
-            pointer-events: none;
-        }
-
-        .unlock-notification.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(10px);
-        }        /* Special combo notification */
-        .combo-notification {
-            color: var(--accent-color);
-            font-size: 1.2em;
-            text-shadow: 0 0 10px var(--accent-color);
-            animation: combo-animation 0.5s ease-in-out infinite;
-            margin-top: 5px;
-            max-width: 100%;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            padding: 0 10px;
-            box-sizing: border-box;
-            white-space: normal; /* Prevents horizontal scrollbar */
-        }
-
-        @keyframes combo-animation {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
+        .dice[data-value="1"] .dice-face-item:nth-child(1) { grid-area: a; }
+        .dice[data-value="2"] .dice-face-item:nth-child(1) { grid-area: a; }
+        .dice[data-value="2"] .dice-face-item:nth-child(2) { grid-area: b; }
+        .dice[data-value="3"] .dice-face-item:nth-child(1) { grid-area: a; }
+        .dice[data-value="3"] .dice-face-item:nth-child(2) { grid-area: b; }
+        .dice[data-value="3"] .dice-face-item:nth-child(3) { grid-area: c; }
+        .dice[data-value="4"] .dice-face-item:nth-child(1) { grid-area: a; }
+        .dice[data-value="4"] .dice-face-item:nth-child(2) { grid-area: b; }
+        .dice[data-value="4"] .dice-face-item:nth-child(3) { grid-area: c; }
+        .dice[data-value="4"] .dice-face-item:nth-child(4) { grid-area: d; }
+        .dice[data-value="5"] .dice-face-item:nth-child(1) { grid-area: a; }
+        .dice[data-value="5"] .dice-face-item:nth-child(2) { grid-area: b; }
+        .dice[data-value="5"] .dice-face-item:nth-child(3) { grid-area: c; }
+        .dice[data-value="5"] .dice-face-item:nth-child(4) { grid-area: d; }
+        .dice[data-value="5"] .dice-face-item:nth-child(5) { grid-area: e; }
+        .dice[data-value="6"] .dice-face-item:nth-child(1) { grid-area: a; }
+        .dice[data-value="6"] .dice-face-item:nth-child(2) { grid-area: b; }
+        .dice[data-value="6"] .dice-face-item:nth-child(3) { grid-area: c; }
+        .dice[data-value="6"] .dice-face-item:nth-child(4) { grid-area: d; }
+        .dice[data-value="6"] .dice-face-item:nth-child(5) { grid-area: e; }
+        .dice[data-value="6"] .dice-face-item:nth-child(6) { grid-area: f; }
     </style>
 </head>
-<body>    <div class="unlock-notification" id="unlock-notification">Theme unlocked!</div>
+<body class="font-press-start bg-theme-background text-theme-text flex flex-col items-center justify-center min-h-screen m-0 p-2.5 box-border overflow-hidden relative"> 
+    
+    <div id="unlock-notification" class="unlock-notification fixed top-5 left-1/2 -translate-x-1/2 bg-theme-accent text-theme-background py-2.5 px-[15px] rounded-[5px] z-[1000] text-[0.8em] opacity-0 transition-opacity duration-300 transform pointer-events-none">Theme unlocked!</div>
 
-    <div class="theme-selector">
-        <div class="theme-button theme-retro" data-theme="retro" title="Retro Theme"></div>
-        <div class="theme-button theme-space locked" data-theme="space" title="Space Theme (Locked: Roll 10 times)" data-unlock-at="10"></div>
-        <div class="theme-button theme-fantasy locked" data-theme="fantasy" title="Fantasy Theme (Locked: Roll 20 times)" data-unlock-at="20"></div>
-        <div class="theme-button theme-fire locked" data-theme="fire" title="Fire Theme (Locked: Roll 30 times)" data-unlock-at="30"></div>
+    <div class="theme-selector absolute top-2.5 right-2.5 z-10 flex flex-col gap-[5px]">
+        <div class="theme-button theme-retro w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-[var(--text-color)] shadow-[inset_0_0_5px_rgba(0,0,0,0.5)] transition-transform duration-200 hover:scale-110" data-theme="retro" title="Retro Theme" style="background: linear-gradient(45deg, #1a0a1f, #ff00ff);"></div>
+        <div class="theme-button theme-space w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-[var(--text-color)] shadow-[inset_0_0_5px_rgba(0,0,0,0.5)] transition-transform duration-200 hover:scale-110 locked filter grayscale opacity-50 cursor-not-allowed relative" data-theme="space" title="Space Theme (Locked: Roll 10 times)" data-unlock-at="10" style="background: linear-gradient(45deg, #050520, #4287f5);"></div>
+        <div class="theme-button theme-fantasy w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-[var(--text-color)] shadow-[inset_0_0_5px_rgba(0,0,0,0.5)] transition-transform duration-200 hover:scale-110 locked filter grayscale opacity-50 cursor-not-allowed relative" data-theme="fantasy" title="Fantasy Theme (Locked: Roll 20 times)" data-unlock-at="20" style="background: linear-gradient(45deg, #2c1a0a, #66cc33);"></div>
+        <div class="theme-button theme-fire w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-[var(--text-color)] shadow-[inset_0_0_5px_rgba(0,0,0,0.5)] transition-transform duration-200 hover:scale-110 locked filter grayscale opacity-50 cursor-not-allowed relative" data-theme="fire" title="Fire Theme (Locked: Roll 30 times)" data-unlock-at="30" style="background: linear-gradient(45deg, #300808, #ff4500);"></div>
     </div>
 
-    <div class="game-container">
-        <h1>Ia si alearga caine</h1>
+    <div class="game-container bg-[rgba(10,5,15,0.85)] rounded-[15px] border-[3px] border-theme-primary text-center w-full max-w-[500px] h-full max-h-[95vh] z-50 relative 
+                 flex flex-col justify-around box-border overflow-y-auto 
+                 px-5 py-[clamp(10px,3vh,20px)] sm:py-[clamp(10px,2vh,15px)] sm:px-[15px]
+                 transform transition-transform duration-[400ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] 
+                 scale-[0.97] [perspective:1200px] rotate-x-[1.5deg] rotate-y-[-1deg]
+                 sm:scale-[0.98] sm:[perspective:1000px] sm:rotate-x-[1deg] sm:rotate-y-[-0.5deg]">
+        <h1 class="text-theme-primary mt-0 mb-[15px] text-[1.6em] sm:text-[1.2em] leading-[1.2] sm:leading-[1.1] break-words">Ia si alearga caine</h1>
         
-        <div class="controls">
-             <div class="toggle-button-container">
-                <button class="toggle-button active" id="dice-count-2" data-count="2">2 Dice</button>
-                <button class="toggle-button" id="dice-count-3" data-count="3">3 Dice</button>
+        <div class="controls mb-[15px] sm:mb-[10px] flex flex-col items-center gap-[10px] sm:gap-[8px]">
+             <div class="toggle-button-container flex gap-2 bg-theme-dice-bg p-[7px] rounded-[7px] border border-theme-secondary shadow-[inset_0_0_5px_rgba(0,0,0,0.4)]">
+                <button class="toggle-button bg-transparent text-theme-secondary border-2 border-transparent py-[7px] px-2.5 cursor-pointer text-[0.75em] sm:text-[0.7em] rounded-[5px] transition-colors duration-200 hover:text-theme-accent hover:bg-yellow-500/10 active" id="dice-count-2" data-count="2">2 Dice</button>
+                <button class="toggle-button bg-transparent text-theme-secondary border-2 border-transparent py-[7px] px-2.5 cursor-pointer text-[0.75em] sm:text-[0.7em] rounded-[5px] transition-colors duration-200 hover:text-theme-accent hover:bg-yellow-500/10" id="dice-count-3" data-count="3">3 Dice</button>
             </div>
             
-            <div class="dice-set-selector">
-                <button class="dice-set-button active" data-set="numbers">Classic</button>
-                <button class="dice-set-button" data-set="space">Space</button>
-                <button class="dice-set-button" data-set="fantasy">Fantasy</button>
-                <button class="dice-set-button" data-set="emoji">Emoji</button>
+            <div class="dice-set-selector mt-2.5 flex gap-2.5 flex-wrap justify-center">
+                <button class="dice-set-button bg-theme-dice-bg text-theme-dice-dot border border-theme-secondary rounded-[5px] py-[5px] px-2 text-[0.7em] cursor-pointer transition-colors duration-200 transform hover:bg-theme-primary hover:text-theme-background hover:scale-105 active" data-set="numbers">Classic</button>
+                <button class="dice-set-button bg-theme-dice-bg text-theme-dice-dot border border-theme-secondary rounded-[5px] py-[5px] px-2 text-[0.7em] cursor-pointer transition-colors duration-200 transform hover:bg-theme-primary hover:text-theme-background hover:scale-105" data-set="space">Space</button>
+                <button class="dice-set-button bg-theme-dice-bg text-theme-dice-dot border border-theme-secondary rounded-[5px] py-[5px] px-2 text-[0.7em] cursor-pointer transition-colors duration-200 transform hover:bg-theme-primary hover:text-theme-background hover:scale-105" data-set="fantasy">Fantasy</button>
+                <button class="dice-set-button bg-theme-dice-bg text-theme-dice-dot border border-theme-secondary rounded-[5px] py-[5px] px-2 text-[0.7em] cursor-pointer transition-colors duration-200 transform hover:bg-theme-primary hover:text-theme-background hover:scale-105" data-set="emoji">Emoji</button>
             </div>
-        </div>        <div class="dice-area" id="dice-area">
+        </div>        
+        <div class="dice-area flex justify-center gap-[15px] sm:gap-[10px] mb-5 sm:mb-[15px] min-h-[80px] sm:min-h-[60px]" id="dice-area">
             </div>
 
-        <button class="roll-button" id="roll-button">Roll for Run!</button>
-
-        <p id="result-text">Roll the dice to see your fate!</p>
-        <div id="combo-text" class="combo-notification"></div>
-
-        </div>
+        <button class="roll-button text-theme-text border-2 border-theme-accent py-2.5 px-5 text-[0.9em] sm:text-[0.8em] cursor-pointer rounded-lg mt-[5px] mb-[5px] transition-all duration-100 ease-linear hover:text-theme-background hover:border-theme-primary hover:-translate-y-px hover:scale-102 active:translate-y-px active:scale-98" id="roll-button" style="background: linear-gradient(145deg, var(--primary-color), #c000c0);">Roll for Run!</button>
+        <p id="result-text" class="mt-2.5 mb-2.5 text-[1.1em] sm:text-[1em] text-theme-accent min-h-[1.5em] leading-[1.3]">Roll the dice to see your fate!</p>
+        <div id="combo-text" class="combo-notification text-theme-accent text-[1.2em] mt-[5px] max-w-full break-words px-2.5 box-border whitespace-normal"></div>
+    </div>
 
     <script>
         const diceArea = document.getElementById('dice-area');
         const rollButton = document.getElementById('roll-button');
         const resultText = document.getElementById('result-text');
-        const comboText = document.getElementById('combo-text');        const diceCountButtons = [document.getElementById('dice-count-2'), document.getElementById('dice-count-3')];
+        const comboText = document.getElementById('combo-text');        
+        const diceCountButtons = [document.getElementById('dice-count-2'), document.getElementById('dice-count-3')];
         const unlockNotification = document.getElementById('unlock-notification');
         const themeButtons = document.querySelectorAll('.theme-button');
         const diceSetButtons = document.querySelectorAll('.dice-set-button');
@@ -572,107 +226,84 @@
         let unlockedThemes = localStorage.getItem('unlockedThemes') ? 
                              JSON.parse(localStorage.getItem('unlockedThemes')) : ['retro'];
 
-        // Check previously unlocked themes
         function initThemes() {
-            document.body.className = `theme-${currentTheme}`;
+            const baseBodyClasses = "font-press-start bg-theme-background text-theme-text flex flex-col items-center justify-center min-h-screen m-0 p-2.5 box-border overflow-hidden relative";
+            document.body.className = `theme-${currentTheme} ${baseBodyClasses}`; 
             
             themeButtons.forEach(button => {
                 const theme = button.dataset.theme;
                 if (unlockedThemes.includes(theme)) {
-                    button.classList.remove('locked');
+                    button.classList.remove('locked', 'filter', 'grayscale', 'opacity-50', 'cursor-not-allowed');
                     button.removeAttribute('data-unlock-at');
                     button.title = `${theme.charAt(0).toUpperCase() + theme.slice(1)} Theme`;
+                } else {
+                    button.classList.add('locked', 'filter', 'grayscale', 'opacity-50', 'cursor-not-allowed');
                 }
-                
-                if (theme === currentTheme) {
-                    button.style.border = '3px solid var(--text-color)';
-                }
+                button.style.border = theme === currentTheme ? '3px solid var(--text-color)' : '2px solid var(--text-color)';
             });
         }
 
-        // Initialize dice sets
         function initDiceSets() {
             diceSetButtons.forEach(button => {
-                if (button.dataset.set === currentDiceSet) {
-                    button.classList.add('active');
-                } else {
-                    button.classList.remove('active');
-                }
+                if (button.dataset.set === currentDiceSet) button.classList.add('active');
+                else button.classList.remove('active');
             });
         }
-
-        // Dice face definitions for different sets
+        
         const diceSets = {
-            numbers: {
-                1: ['dot'],
-                2: ['dot', 'dot'],
-                3: ['dot', 'dot', 'dot'],
-                4: ['dot', 'dot', 'dot', 'dot'],
-                5: ['dot', 'dot', 'dot', 'dot', 'dot'],
-                6: ['dot', 'dot', 'dot', 'dot', 'dot', 'dot']
+            numbers: { 1: ['dot'], 2: ['dot', 'dot'], 3: ['dot', 'dot', 'dot'], 4: ['dot', 'dot', 'dot', 'dot'], 5: ['dot', 'dot', 'dot', 'dot', 'dot'], 6: ['dot', 'dot', 'dot', 'dot', 'dot', 'dot']},
+            space: { 
+                1: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L2.5 6.5V17.5L12 22L21.5 17.5V6.5L12 2ZM4.5 7.5L12 11L19.5 7.5L12 4L4.5 7.5Z"/></svg>'], 
+                2: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.64-.11 2.41-.32.95-.28 1.82-.73 2.59-1.32A8.994 8.994 0 0012 3zm0 16c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7z"/></svg>'], 
+                3: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L2.5 6.5V17.5L12 22L21.5 17.5V6.5L12 2ZM4.5 7.5L12 11L19.5 7.5L12 4L4.5 7.5Z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M21 6.12L18.36 6.5L17 4l-1.36.5L13.88 2.12L13.5 4.5L11.12 3.38l-.5 1.36L8.5 4.5L6.12 2.12l.38 2.38L4 6.12l2.38.38L4.5 9.5l2.38-.38L6.5 12l2.38.38L8.5 15l-2.38.38L4 17.88l2.38-.38L6.12 20.5l2.38-.38.38 2.38L11.12 20l.5 1.36L13.5 20l2.38 2.38-.38-2.38L17.88 20l-2.38-.38L15.5 17l2.38-.38L20 15.5l-2.38.38L17.5 12l-2.38-.38L15.5 9l2.38.38L20 6.5l-2.38-.38L20 4l-2.38.38L17.88 2.5l.38 2.38z"/></svg>'], 
+                4: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L2.5 6.5V17.5L12 22L21.5 17.5V6.5L12 2ZM4.5 7.5L12 11L19.5 7.5L12 4L4.5 7.5Z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M21 6.12L18.36 6.5L17 4l-1.36.5L13.88 2.12L13.5 4.5L11.12 3.38l-.5 1.36L8.5 4.5L6.12 2.12l.38 2.38L4 6.12l2.38.38L4.5 9.5l2.38-.38L6.5 12l2.38.38L8.5 15l-2.38.38L4 17.88l2.38-.38L6.12 20.5l2.38-.38.38 2.38L11.12 20l.5 1.36L13.5 20l2.38 2.38-.38-2.38L17.88 20l-2.38-.38L15.5 17l2.38-.38L20 15.5l-2.38.38L17.5 12l-2.38-.38L15.5 9l2.38.38L20 6.5l-2.38-.38L20 4l-2.38.38L17.88 2.5l.38 2.38z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5.5-2.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zm11 0c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zm-3.5-7c.83 0 1.5-.67 1.5-1.5S14.83 8.5 14 8.5s-1.5.67-1.5 1.5.67 1.5 1.5 1.5z"/></svg>'], 
+                5: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L2.5 6.5V17.5L12 22L21.5 17.5V6.5L12 2ZM4.5 7.5L12 11L19.5 7.5L12 4L4.5 7.5Z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M21 6.12L18.36 6.5L17 4l-1.36.5L13.88 2.12L13.5 4.5L11.12 3.38l-.5 1.36L8.5 4.5L6.12 2.12l.38 2.38L4 6.12l2.38.38L4.5 9.5l2.38-.38L6.5 12l2.38.38L8.5 15l-2.38.38L4 17.88l2.38-.38L6.12 20.5l2.38-.38.38 2.38L11.12 20l.5 1.36L13.5 20l2.38 2.38-.38-2.38L17.88 20l-2.38-.38L15.5 17l2.38-.38L20 15.5l-2.38.38L17.5 12l-2.38-.38L15.5 9l2.38.38L20 6.5l-2.38-.38L20 4l-2.38.38L17.88 2.5l.38 2.38z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V8h2v4zm4 4h-2v-2h2v2zm0-4h-2V8h2v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/><path d="M12 4c-2.332 0-4.448.806-6.121 2.121L7.88 7.88A5.965 5.965 0 0112 6c3.309 0 6 2.691 6 6s-2.691 6-6 6c-1.095 0-2.113-.299-3-.808V15h2v-2H9v2.808A7.953 7.953 0 0012 20c4.411 0 8-3.589 8-8s-3.589-8-8-8z"/></svg>'], 
+                6: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L2.5 6.5V17.5L12 22L21.5 17.5V6.5L12 2ZM4.5 7.5L12 11L19.5 7.5L12 4L4.5 7.5Z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M21 6.12L18.36 6.5L17 4l-1.36.5L13.88 2.12L13.5 4.5L11.12 3.38l-.5 1.36L8.5 4.5L6.12 2.12l.38 2.38L4 6.12l2.38.38L4.5 9.5l2.38-.38L6.5 12l2.38.38L8.5 15l-2.38.38L4 17.88l2.38-.38L6.12 20.5l2.38-.38.38 2.38L11.12 20l.5 1.36L13.5 20l2.38 2.38-.38-2.38L17.88 20l-2.38-.38L15.5 17l2.38-.38L20 15.5l-2.38.38L17.5 12l-2.38-.38L15.5 9l2.38.38L20 6.5l-2.38-.38L20 4l-2.38.38L17.88 2.5l.38 2.38z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V8h2v4zm4 4h-2v-2h2v2zm0-4h-2V8h2v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/><path d="M12 4c-2.332 0-4.448.806-6.121 2.121L7.88 7.88A5.965 5.965 0 0112 6c3.309 0 6 2.691 6 6s-2.691 6-6 6c-1.095 0-2.113-.299-3-.808V15h2v-2H9v2.808A7.953 7.953 0 0012 20c4.411 0 8-3.589 8-8s-3.589-8-8-8z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.64-.11 2.41-.32.95-.28 1.82-.73 2.59-1.32A8.994 8.994 0 0012 3zm0 16c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7z"/></svg>']
             },
-            space: {
-                1: ['<i class="fas fa-rocket themed-icon"></i>'],
-                2: ['<i class="fas fa-star themed-icon"></i>', '<i class="fas fa-moon themed-icon"></i>'],
-                3: ['<i class="fas fa-rocket themed-icon"></i>', '<i class="fas fa-star themed-icon"></i>', '<i class="fas fa-meteor themed-icon"></i>'],
-                4: ['<i class="fas fa-rocket themed-icon"></i>', '<i class="fas fa-star themed-icon"></i>', '<i class="fas fa-meteor themed-icon"></i>', '<i class="fas fa-planet-ringed themed-icon"></i>'],
-                5: ['<i class="fas fa-rocket themed-icon"></i>', '<i class="fas fa-star themed-icon"></i>', '<i class="fas fa-meteor themed-icon"></i>', '<i class="fas fa-satellite themed-icon"></i>', '<i class="fas fa-globe themed-icon"></i>'],
-                6: ['<i class="fas fa-rocket themed-icon"></i>', '<i class="fas fa-star themed-icon"></i>', '<i class="fas fa-meteor themed-icon"></i>', '<i class="fas fa-satellite themed-icon"></i>', '<i class="fas fa-globe themed-icon"></i>', '<i class="fas fa-moon themed-icon"></i>']
+            fantasy: { 
+                1: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V8h2v4zm4 4h-2v-2h2v2zm0-4h-2V8h2v4z"/></svg>'], 
+                2: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V8h2v4zm4 4h-2v-2h2v2zm0-4h-2V8h2v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M4 20q0 .825.588 1.413T6 22h12q.825 0 1.413-.587T20 20V8q0-.825-.587-1.412T18 6H6q-.825 0-1.412.588T4 8Zm2-12h12v12H6Zm0 0V6V4q0-.825.588-1.412T8 2h8q.825 0 1.413.588T18 4v2h-2V4H8v2Z"/></svg>'], 
+                3: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V8h2v4zm4 4h-2v-2h2v2zm0-4h-2V8h2v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M4 20q0 .825.588 1.413T6 22h12q.825 0 1.413-.587T20 20V8q0-.825-.587-1.412T18 6H6q-.825 0-1.412.588T4 8Zm2-12h12v12H6Zm0 0V6V4q0-.825.588-1.412T8 2h8q.825 0 1.413.588T18 4v2h-2V4H8v2Z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.92V13H5v-1.99h7z"/></svg>'], 
+                4: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V8h2v4zm4 4h-2v-2h2v2zm0-4h-2V8h2v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M4 20q0 .825.588 1.413T6 22h12q.825 0 1.413-.587T20 20V8q0-.825-.587-1.412T18 6H6q-.825 0-1.412.588T4 8Zm2-12h12v12H6Zm0 0V6V4q0-.825.588-1.412T8 2h8q.825 0 1.413.588T18 4v2h-2V4H8v2Z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.92V13H5v-1.99h7z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>'], 
+                5: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V8h2v4zm4 4h-2v-2h2v2zm0-4h-2V8h2v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M4 20q0 .825.588 1.413T6 22h12q.825 0 1.413-.587T20 20V8q0-.825-.587-1.412T18 6H6q-.825 0-1.412.588T4 8Zm2-12h12v12H6Zm0 0V6V4q0-.825.588-1.412T8 2h8q.825 0 1.413.588T18 4v2h-2V4H8v2Z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.92V13H5v-1.99h7z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L2.5 6.5V17.5L12 22L21.5 17.5V6.5L12 2ZM4.5 7.5L12 11L19.5 7.5L12 4L4.5 7.5Z"/></svg>'], 
+                6: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V8h2v4zm4 4h-2v-2h2v2zm0-4h-2V8h2v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M4 20q0 .825.588 1.413T6 22h12q.825 0 1.413-.587T20 20V8q0-.825-.587-1.412T18 6H6q-.825 0-1.412.588T4 8Zm2-12h12v12H6Zm0 0V6V4q0-.825.588-1.412T8 2h8q.825 0 1.413.588T18 4v2h-2V4H8v2Z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.92V13H5v-1.99h7z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L2.5 6.5V17.5L12 22L21.5 17.5V6.5L12 2ZM4.5 7.5L12 11L19.5 7.5L12 4L4.5 7.5Z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3v-2H5v2h14z"/></svg>']
             },
-            fantasy: {
-                1: ['<i class="fas fa-dragon themed-icon"></i>'],
-                2: ['<i class="fas fa-dragon themed-icon"></i>', '<i class="fas fa-hat-wizard themed-icon"></i>'],
-                3: ['<i class="fas fa-dragon themed-icon"></i>', '<i class="fas fa-hat-wizard themed-icon"></i>', '<i class="fas fa-shield-alt themed-icon"></i>'],
-                4: ['<i class="fas fa-dragon themed-icon"></i>', '<i class="fas fa-hat-wizard themed-icon"></i>', '<i class="fas fa-shield-alt themed-icon"></i>', '<i class="fas fa-scroll themed-icon"></i>'],
-                5: ['<i class="fas fa-dragon themed-icon"></i>', '<i class="fas fa-hat-wizard themed-icon"></i>', '<i class="fas fa-shield-alt themed-icon"></i>', '<i class="fas fa-scroll themed-icon"></i>', '<i class="fas fa-gem themed-icon"></i>'],
-                6: ['<i class="fas fa-dragon themed-icon"></i>', '<i class="fas fa-hat-wizard themed-icon"></i>', '<i class="fas fa-shield-alt themed-icon"></i>', '<i class="fas fa-scroll themed-icon"></i>', '<i class="fas fa-gem themed-icon"></i>', '<i class="fas fa-crown themed-icon"></i>']
-            },
-            emoji: {
-                1: ['<span class="themed-icon">🏃</span>'],
-                2: ['<span class="themed-icon">🏃</span>', '<span class="themed-icon">🐕</span>'],
-                3: ['<span class="themed-icon">🏃</span>', '<span class="themed-icon">🐕</span>', '<span class="themed-icon">🏆</span>'],
-                4: ['<span class="themed-icon">🏃</span>', '<span class="themed-icon">🐕</span>', '<span class="themed-icon">🏆</span>', '<span class="themed-icon">🔥</span>'],
-                5: ['<span class="themed-icon">🏃</span>', '<span class="themed-icon">🐕</span>', '<span class="themed-icon">🏆</span>', '<span class="themed-icon">🔥</span>', '<span class="themed-icon">💪</span>'],
-                6: ['<span class="themed-icon">🏃</span>', '<span class="themed-icon">🐕</span>', '<span class="themed-icon">🏆</span>', '<span class="themed-icon">🔥</span>', '<span class="themed-icon">💪</span>', '<span class="themed-icon">🌟</span>']
+            emoji: { 
+                1: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 15.4V22h2v-6.1l1.7-4.4 1.1 1 1.1-1.3L14.6 12H18v2h2v-2.2c0-.5-.2-.9-.5-1.2L14.8 7c-.3-.3-.7-.3-1 0l-1.7 1.9-1.3-2.3c-.2-.3-.5-.4-.8-.4s-.6.1-.8.4l-1.7 2.9c-.3.6-.2 1.2.1 1.7.3.5.9.8 1.5.8H9.8z"/></svg>'], 
+                2: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 15.4V22h2v-6.1l1.7-4.4 1.1 1 1.1-1.3L14.6 12H18v2h2v-2.2c0-.5-.2-.9-.5-1.2L14.8 7c-.3-.3-.7-.3-1 0l-1.7 1.9-1.3-2.3c-.2-.3-.5-.4-.8-.4s-.6.1-.8.4l-1.7 2.9c-.3.6-.2 1.2.1 1.7.3.5.9.8 1.5.8H9.8z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M22 10.5c0-.28-.22-.5-.5-.5H18v-2h-2.5c-1.1 0-2.16.36-3 1H12c-.55 0-1 .45-1 1v.5c0 .83.67 1.5 1.5 1.5H14v1h-1.5c-.83 0-1.5.67-1.5 1.5V16c0 .83.67 1.5 1.5 1.5h2c.28 0 .5-.22.5-.5V13h1.5c.83 0 1.5-.67 1.5-1.5v-1zm-6.5-2c.55 0 1-.45 1-1s-.45-1-1-1h-1v2h1zM4.21 18.79C3.44 17.93 3 16.77 3 15.5c0-2.63 3.5-4.5 5.5-4.5h.5V9.5c0-.83-.67-1.5-1.5-1.5H6V6h1.5c1.93 0 3.5 1.57 3.5 3.5v1.5c0 .83.67 1.5 1.5 1.5h1c.28 0 .5.22.5.5v2c0 .28-.22.5-.5.5h-1.28c-.57 1.62-2.04 2.86-3.82 3.24V21H7.21c-.48 0-.94-.13-1.33-.36l-1.67-.95z"/></svg>'], 
+                3: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 15.4V22h2v-6.1l1.7-4.4 1.1 1 1.1-1.3L14.6 12H18v2h2v-2.2c0-.5-.2-.9-.5-1.2L14.8 7c-.3-.3-.7-.3-1 0l-1.7 1.9-1.3-2.3c-.2-.3-.5-.4-.8-.4s-.6.1-.8.4l-1.7 2.9c-.3.6-.2 1.2.1 1.7.3.5.9.8 1.5.8H9.8z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M22 10.5c0-.28-.22-.5-.5-.5H18v-2h-2.5c-1.1 0-2.16.36-3 1H12c-.55 0-1 .45-1 1v.5c0 .83.67 1.5 1.5 1.5H14v1h-1.5c-.83 0-1.5.67-1.5 1.5V16c0 .83.67 1.5 1.5 1.5h2c.28 0 .5-.22.5-.5V13h1.5c.83 0 1.5-.67 1.5-1.5v-1zm-6.5-2c.55 0 1-.45 1-1s-.45-1-1-1h-1v2h1zM4.21 18.79C3.44 17.93 3 16.77 3 15.5c0-2.63 3.5-4.5 5.5-4.5h.5V9.5c0-.83-.67-1.5-1.5-1.5H6V6h1.5c1.93 0 3.5 1.57 3.5 3.5v1.5c0 .83.67 1.5 1.5 1.5h1c.28 0 .5.22.5.5v2c0 .28-.22.5-.5.5h-1.28c-.57 1.62-2.04 2.86-3.82 3.24V21H7.21c-.48 0-.94-.13-1.33-.36l-1.67-.95z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-4h10v-2H7v2zm3-4h4V8H10v4z"/></svg>'], 
+                4: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 15.4V22h2v-6.1l1.7-4.4 1.1 1 1.1-1.3L14.6 12H18v2h2v-2.2c0-.5-.2-.9-.5-1.2L14.8 7c-.3-.3-.7-.3-1 0l-1.7 1.9-1.3-2.3c-.2-.3-.5-.4-.8-.4s-.6.1-.8.4l-1.7 2.9c-.3.6-.2 1.2.1 1.7.3.5.9.8 1.5.8H9.8z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M22 10.5c0-.28-.22-.5-.5-.5H18v-2h-2.5c-1.1 0-2.16.36-3 1H12c-.55 0-1 .45-1 1v.5c0 .83.67 1.5 1.5 1.5H14v1h-1.5c-.83 0-1.5.67-1.5 1.5V16c0 .83.67 1.5 1.5 1.5h2c.28 0 .5-.22.5-.5V13h1.5c.83 0 1.5-.67 1.5-1.5v-1zm-6.5-2c.55 0 1-.45 1-1s-.45-1-1-1h-1v2h1zM4.21 18.79C3.44 17.93 3 16.77 3 15.5c0-2.63 3.5-4.5 5.5-4.5h.5V9.5c0-.83-.67-1.5-1.5-1.5H6V6h1.5c1.93 0 3.5 1.57 3.5 3.5v1.5c0 .83.67 1.5 1.5 1.5h1c.28 0 .5.22.5.5v2c0 .28-.22.5-.5.5h-1.28c-.57 1.62-2.04 2.86-3.82 3.24V21H7.21c-.48 0-.94-.13-1.33-.36l-1.67-.95z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-4h10v-2H7v2zm3-4h4V8H10v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.41 4.41C12.63 5.19 12 6.29 12 7.5c0 1.21.63 2.31 1.41 3.09.78.78 1.88 1.41 3.09 1.41 1.21 0 2.31-.63 3.09-1.41.78-.78 1.41-1.88 1.41-3.09 0-1.21-.63-2.31-1.41-3.09-.78-.78-1.88-1.41-3.09-1.41-1.21 0-2.31.63-3.09 1.41M10 20c0-1.1.9-2 2-2s2 .9 2 2H5.83C5.92 17.82 7.76 13 12 13s6.08 4.82 6.17 7H14c0-1.1-.9-2-2-2s-2 .9-2 2H10z"/></svg>'], 
+                5: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 15.4V22h2v-6.1l1.7-4.4 1.1 1 1.1-1.3L14.6 12H18v2h2v-2.2c0-.5-.2-.9-.5-1.2L14.8 7c-.3-.3-.7-.3-1 0l-1.7 1.9-1.3-2.3c-.2-.3-.5-.4-.8-.4s-.6.1-.8.4l-1.7 2.9c-.3.6-.2 1.2.1 1.7.3.5.9.8 1.5.8H9.8z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M22 10.5c0-.28-.22-.5-.5-.5H18v-2h-2.5c-1.1 0-2.16.36-3 1H12c-.55 0-1 .45-1 1v.5c0 .83.67 1.5 1.5 1.5H14v1h-1.5c-.83 0-1.5.67-1.5 1.5V16c0 .83.67 1.5 1.5 1.5h2c.28 0 .5-.22.5-.5V13h1.5c.83 0 1.5-.67 1.5-1.5v-1zm-6.5-2c.55 0 1-.45 1-1s-.45-1-1-1h-1v2h1zM4.21 18.79C3.44 17.93 3 16.77 3 15.5c0-2.63 3.5-4.5 5.5-4.5h.5V9.5c0-.83-.67-1.5-1.5-1.5H6V6h1.5c1.93 0 3.5 1.57 3.5 3.5v1.5c0 .83.67 1.5 1.5 1.5h1c.28 0 .5.22.5.5v2c0 .28-.22.5-.5.5h-1.28c-.57 1.62-2.04 2.86-3.82 3.24V21H7.21c-.48 0-.94-.13-1.33-.36l-1.67-.95z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-4h10v-2H7v2zm3-4h4V8H10v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.41 4.41C12.63 5.19 12 6.29 12 7.5c0 1.21.63 2.31 1.41 3.09.78.78 1.88 1.41 3.09 1.41 1.21 0 2.31-.63 3.09-1.41.78-.78 1.41-1.88 1.41-3.09 0-1.21-.63-2.31-1.41-3.09-.78-.78-1.88-1.41-3.09-1.41-1.21 0-2.31.63-3.09 1.41M10 20c0-1.1.9-2 2-2s2 .9 2 2H5.83C5.92 17.82 7.76 13 12 13s6.08 4.82 6.17 7H14c0-1.1-.9-2-2-2s-2 .9-2 2H10z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M17.75 7.03A6.002 6.002 0 0012 3C9.24 3 6.85 4.61 5.73 6.87c-.22.45-.11.99.26 1.33.37.34.92.36 1.31.05A3.992 3.992 0 0112 5c1.31 0 2.5.63 3.25 1.64.21.28.55.38.86.26.31-.12.52-.41.54-.77zM6.25 16.97A6.002 6.002 0 0012 21c2.76 0 5.15-1.61 6.27-3.87.22-.45.11-.99-.26-1.33a.976.976 0 00-1.31-.05A3.992 3.992 0 0112 19c-1.31 0-2.5-.63-3.25-1.64a.71.71 0 00-.86-.26c-.31.12-.52.41-.54.77z"/></svg>'], 
+                6: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 15.4V22h2v-6.1l1.7-4.4 1.1 1 1.1-1.3L14.6 12H18v2h2v-2.2c0-.5-.2-.9-.5-1.2L14.8 7c-.3-.3-.7-.3-1 0l-1.7 1.9-1.3-2.3c-.2-.3-.5-.4-.8-.4s-.6.1-.8.4l-1.7 2.9c-.3.6-.2 1.2.1 1.7.3.5.9.8 1.5.8H9.8z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M22 10.5c0-.28-.22-.5-.5-.5H18v-2h-2.5c-1.1 0-2.16.36-3 1H12c-.55 0-1 .45-1 1v.5c0 .83.67 1.5 1.5 1.5H14v1h-1.5c-.83 0-1.5.67-1.5 1.5V16c0 .83.67 1.5 1.5 1.5h2c.28 0 .5-.22.5-.5V13h1.5c.83 0 1.5-.67 1.5-1.5v-1zm-6.5-2c.55 0 1-.45 1-1s-.45-1-1-1h-1v2h1zM4.21 18.79C3.44 17.93 3 16.77 3 15.5c0-2.63 3.5-4.5 5.5-4.5h.5V9.5c0-.83-.67-1.5-1.5-1.5H6V6h1.5c1.93 0 3.5 1.57 3.5 3.5v1.5c0 .83.67 1.5 1.5 1.5h1c.28 0 .5.22.5.5v2c0 .28-.22.5-.5.5h-1.28c-.57 1.62-2.04 2.86-3.82 3.24V21H7.21c-.48 0-.94-.13-1.33-.36l-1.67-.95z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-4h10v-2H7v2zm3-4h4V8H10v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.41 4.41C12.63 5.19 12 6.29 12 7.5c0 1.21.63 2.31 1.41 3.09.78.78 1.88 1.41 3.09 1.41 1.21 0 2.31-.63 3.09-1.41.78-.78 1.41-1.88 1.41-3.09 0-1.21-.63-2.31-1.41-3.09-.78-.78-1.88-1.41-3.09-1.41-1.21 0-2.31.63-3.09 1.41M10 20c0-1.1.9-2 2-2s2 .9 2 2H5.83C5.92 17.82 7.76 13 12 13s6.08 4.82 6.17 7H14c0-1.1-.9-2-2-2s-2 .9-2 2H10z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M17.75 7.03A6.002 6.002 0 0012 3C9.24 3 6.85 4.61 5.73 6.87c-.22.45-.11.99.26 1.33.37.34.92.36 1.31.05A3.992 3.992 0 0112 5c1.31 0 2.5.63 3.25 1.64.21.28.55.38.86.26.31-.12.52-.41.54-.77zM6.25 16.97A6.002 6.002 0 0012 21c2.76 0 5.15-1.61 6.27-3.87.22-.45.11-.99-.26-1.33a.976.976 0 00-1.31-.05A3.992 3.992 0 0112 19c-1.31 0-2.5-.63-3.25-1.64a.71.71 0 00-.86-.26c-.31.12-.52.41-.54.77z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>']
             }
-        };        // Function to create a single die element
+        };        
+        
         function createDieElement(value) {
             const die = document.createElement('div');
-            die.classList.add('dice');
+            die.className = 'dice w-[80px] h-[80px] sm:w-[60px] sm:h-[60px] bg-theme-dice-bg border-2 border-theme-secondary rounded-lg grid p-1 transition-transform duration-300 ease-out';
             die.dataset.value = value; 
 
-            const diceContent = diceSets[currentDiceSet][value];
-            
-            if (diceContent) {
-                // For themed dice sets, use a different layout approach
-                if (currentDiceSet !== 'numbers') {
-                    // Create a container for themed content that centers it in the dice
-                    const themeContainer = document.createElement('div');
-                    themeContainer.className = 'theme-container';
-                    
-                    // Add all the themed content to the container
-                    diceContent.forEach(item => {
-                        const itemElement = document.createElement('div');
-                        itemElement.className = 'themed-item';
-                        itemElement.innerHTML = item;
-                        themeContainer.appendChild(itemElement);
-                    });
-                    
-                    die.appendChild(themeContainer);
-                } else {
-                    // Original dots for the numbers theme
-                    diceContent.forEach(item => {
-                        const dot = document.createElement('div');
-                        dot.classList.add('dot');
-                        die.appendChild(dot);
-                    });
-                }
+            const itemsToRender = diceSets[currentDiceSet][value]; 
+            if (itemsToRender) {
+                itemsToRender.forEach(itemContent => { 
+                    const pipElement = document.createElement('div');
+                    pipElement.className = 'dice-face-item self-center justify-self-center'; 
+
+                    if (currentDiceSet === 'numbers') {
+                        pipElement.className += ' dot w-3 h-3 sm:w-2.5 sm:h-2.5 bg-theme-dice-dot rounded-full';
+                        pipElement.style.boxShadow = 'var(--glow-soft), 0 0 3px var(--dice-dot)';
+                    } else {
+                        // Removed text-size classes (text-2xl, sm:text-xl) from here.
+                        // The SVG will scale to this container. text-theme-dice-dot provides currentColor for SVG.
+                        pipElement.className += ' themed-pip flex items-center justify-center w-full h-full text-theme-dice-dot';
+                        pipElement.innerHTML = itemContent; // itemContent is the SVG string with its own classes
+                    }
+                    die.appendChild(pipElement);
+                });
             }
-            
             return die;
         }
 
-        // Function to render dice on the screen
         function renderDice(values) {
             diceArea.innerHTML = ''; 
             values.forEach(value => {
@@ -681,69 +312,41 @@
             });
         }
         
-        // Function to simulate rolling a single die
-        function rollSingleDie() {
-            return Math.floor(Math.random() * 6) + 1;
-        }        // Function to check for special combinations
+        function rollSingleDie() { return Math.floor(Math.random() * 6) + 1; }        
+
         function checkSpecialCombinations(diceValues) {
             const counts = {};
             diceValues.forEach(val => counts[val] = (counts[val] || 0) + 1);
-            
-            // Check for pairs, triples, etc.
             let maxCount = Math.max(...Object.values(counts));
-            
             if (maxCount === diceValues.length && diceValues.length > 1) {
-                // All dice show the same value
-                const diceValue = diceValues[0];
-                let bonusKm = 0;
-                
-                // Simple bonus: +1 km for doubles, +2 km for triples
-                if (diceValues.length === 2) {
-                    bonusKm = 1;
-                } else if (diceValues.length === 3) {
-                    bonusKm = 2;
-                }
-                
-                return {
-                    type: 'all-same',
-                    message: `JACKPOT! +${bonusKm} km bonus!`,
-                    bonus: true,
-                    add: bonusKm
-                };
+                const bonusKm = (diceValues.length === 2) ? 1 : (diceValues.length === 3) ? 2 : 0;
+                return { type: 'all-same', message: `JACKPOT! +${bonusKm} km bonus!`, bonus: true, add: bonusKm };
             } else if (diceValues.length >= 2 && maxCount >= 2) {
-                // At least a pair but not all dice
                 const pairValue = parseInt(Object.keys(counts).find(key => counts[key] >= 2));
-                return {
-                    type: 'pair',
-                    message: `Pair of ${pairValue}s! Nice rhythm!`,
-                    bonus: false
-                };
+                return { type: 'pair', message: `Pair of ${pairValue}s! Nice rhythm!`, bonus: false };
             }
-            
             return { type: 'none', message: '', bonus: false };
         }
 
-        // Function to show unlock notification
         function showUnlockNotification(message) {
             unlockNotification.textContent = message;
-            unlockNotification.classList.add('show');
-            
+            unlockNotification.classList.add('opacity-100', 'translate-y-2.5'); 
+            unlockNotification.classList.remove('opacity-0');
             setTimeout(() => {
-                unlockNotification.classList.remove('show');
+                unlockNotification.classList.remove('opacity-100', 'translate-y-2.5');
+                unlockNotification.classList.add('opacity-0');
             }, 3000);
         }
 
-        // Function to check and unlock themes based on roll count
         function checkUnlockables() {
             themeButtons.forEach(button => {
                 if (button.classList.contains('locked') && button.dataset.unlockAt) {
                     const unlockAt = parseInt(button.dataset.unlockAt);
                     if (rollCount >= unlockAt) {
-                        button.classList.remove('locked');
+                        button.classList.remove('locked', 'filter', 'grayscale', 'opacity-50', 'cursor-not-allowed');
                         button.removeAttribute('data-unlock-at');
                         const theme = button.dataset.theme;
                         button.title = `${theme.charAt(0).toUpperCase() + theme.slice(1)} Theme`;
-                        
                         if (!unlockedThemes.includes(theme)) {
                             unlockedThemes.push(theme);
                             localStorage.setItem('unlockedThemes', JSON.stringify(unlockedThemes));
@@ -752,30 +355,21 @@
                     }
                 }
             });
-        }        // Function placeholder for future functionality
-        function placeholderFunction() {
-            // This function replaces the former sound function
-        }
-
-        // Function to handle the dice roll
+        }        
+        
         function handleRoll() {
             rollButton.disabled = true; 
             resultText.textContent = "Rolling...";
             comboText.textContent = "";
             
-            // Increment and save roll count
-            rollCount++;
-            localStorage.setItem('rollCount', rollCount);
-            
-            // Check for unlockables
+            rollCount++; localStorage.setItem('rollCount', rollCount);
             checkUnlockables();
-              let diceValues = [];
-            let totalValue = 0;
-
-            diceArea.innerHTML = '';
+            
+            let diceValues = []; let totalValue = 0;
+            diceArea.innerHTML = ''; 
             for (let i = 0; i < numberOfDice; i++) {
                 const tempDie = createDieElement(Math.floor(Math.random() * 6) + 1); 
-                tempDie.classList.add('rolling');
+                tempDie.classList.add('animate-roll-dice');
                 diceArea.appendChild(tempDie);
             }
             
@@ -783,37 +377,28 @@
                 diceArea.innerHTML = ''; 
                 for (let i = 0; i < numberOfDice; i++) {
                     const value = rollSingleDie();
-                    diceValues.push(value);
-                    totalValue += value;
+                    diceValues.push(value); totalValue += value;
                 }
-                
-                // Check for special combinations
                 const specialCombo = checkSpecialCombinations(diceValues);
-                  // Apply bonus effects if any
                 let finalTotal = totalValue;
                 if (specialCombo.bonus) {
-                    if (specialCombo.multiplier) {
-                        finalTotal = Math.round(totalValue * specialCombo.multiplier);
-                    }
-                    if (specialCombo.add) {
-                        finalTotal = totalValue + specialCombo.add;
-                    }
-                      // Add visual effects to dice for special combos
-                    setTimeout(() => {
-                        const diceElements = document.querySelectorAll('.dice');
-                        diceElements.forEach(die => die.classList.add('special-combo'));
-                    }, 200);                }
-                
-                renderDice(diceValues);
-                
+                    if (specialCombo.multiplier) finalTotal = Math.round(totalValue * specialCombo.multiplier);
+                    if (specialCombo.add) finalTotal = totalValue + specialCombo.add;
+                }
+                renderDice(diceValues); 
+                if (specialCombo.bonus) {
+                     setTimeout(() => { 
+                        document.querySelectorAll('.dice').forEach(die => die.classList.add('animate-special-combo')); 
+                    }, 50); 
+                }
                 resultText.textContent = `You rolled ${diceValues.join(' + ')} = ${totalValue}! Run ${finalTotal} km!`;
-                
                 if (specialCombo.message) {
                     comboText.textContent = specialCombo.message;
+                    comboText.classList.add('animate-combo-notify'); 
+                    setTimeout(() => comboText.classList.remove('animate-combo-notify'), 500); 
                 }
-                
                 rollButton.disabled = false; 
-            }, 700); 
+            }, 500); 
         }
 
         rollButton.addEventListener('click', handleRoll);
@@ -821,81 +406,50 @@
         diceCountButtons.forEach(button => {
             button.addEventListener('click', () => {
                 if (button.classList.contains('active')) return; 
-
                 numberOfDice = parseInt(button.dataset.count);
-                
                 diceCountButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
-                
-                const initialValues = Array(numberOfDice).fill(0).map(() => rollSingleDie()); 
-                renderDice(initialValues);
+                renderDice(Array(numberOfDice).fill(0).map(() => rollSingleDie()));
                 resultText.textContent = `Switched to ${numberOfDice} dice. Roll 'em!`;
                 comboText.textContent = "";
             });
         });
         
-        // Theme button event listeners
         themeButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const theme = button.dataset.theme;
-                
-                // Check if theme is locked
                 if (button.classList.contains('locked')) {
                     const unlockAt = parseInt(button.dataset.unlockAt);
                     resultText.textContent = `Theme locked! Roll ${unlockAt - rollCount} more times to unlock.`;
                     return;
                 }
-                
-                // Apply selected theme
-                document.body.className = `theme-${theme}`;
-                currentTheme = theme;
-                localStorage.setItem('currentTheme', theme);
-                
-                // Update button styling
-                themeButtons.forEach(btn => {
-                    btn.style.border = btn.dataset.theme === theme ? 
-                        '3px solid var(--text-color)' : '2px solid var(--text-color)';
-                });
-                
+                currentTheme = theme; localStorage.setItem('currentTheme', theme);
+                initThemes(); 
                 resultText.textContent = `${theme.charAt(0).toUpperCase() + theme.slice(1)} theme activated!`;
             });
         });
         
-        // Dice set button event listeners
         diceSetButtons.forEach(button => {
             button.addEventListener('click', () => {
                 if (button.classList.contains('active')) return;
-                
                 diceSetButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
-                
-                currentDiceSet = button.dataset.set;
-                localStorage.setItem('currentDiceSet', currentDiceSet);
-                
-                const initialValues = Array(numberOfDice).fill(0).map(() => rollSingleDie()); 
-                renderDice(initialValues);
+                currentDiceSet = button.dataset.set; localStorage.setItem('currentDiceSet', currentDiceSet);
+                renderDice(Array(numberOfDice).fill(0).map(() => rollSingleDie()));
                 resultText.textContent = `Switched to ${currentDiceSet} dice set!`;
             });
         });
 
         function initializeDice() {
-            // Initialize themes
-            initThemes();
-            
-            // Initialize dice sets
+            initThemes(); 
             initDiceSets();
-            
-            const initialValues = Array(numberOfDice).fill(0).map(() => rollSingleDie());
-            renderDice(initialValues);
+            renderDice(Array(numberOfDice).fill(0).map(() => rollSingleDie()));
             diceCountButtons.forEach(btn => btn.classList.remove('active'));
             const activeButton = document.querySelector(`.toggle-button[data-count="${numberOfDice}"]`);
-            if (activeButton) { 
-                 activeButton.classList.add('active');
-            }
+            if (activeButton) activeButton.classList.add('active');
         }
         
         window.onload = initializeDice; 
-
     </script>
 </body>
 </html>
