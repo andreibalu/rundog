@@ -117,9 +117,8 @@
         h1 { text-shadow: 0 0 3px var(--primary-color), 0 0 7px var(--primary-color), 1px 1px 1px rgba(0,0,0,0.8); }
         #result-text { text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color), 1px 1px 0px #000; }
         
-        /* Updated selector for SVG drop shadow */
         .themed-pip > svg.themed-icon {
-            filter: drop-shadow(0 0 3px var(--dice-dot));
+            filter: drop-shadow(0 0 2px var(--dice-dot)); /* Slightly reduced drop shadow for clarity at smaller sizes */
         }
 
         .toggle-button { text-shadow: 0 0 3px var(--secondary-color); }
@@ -139,6 +138,7 @@
         .theme-button:hover { box-shadow: 0 0 10px var(--accent-color); }
         .unlock-notification { box-shadow: 0 0 15px var(--accent-color); }
 
+        /* Grid area definitions for dice faces - Kept in CSS */
         .dice[data-value="1"] { grid-template-areas: ". . ." ". a ." ". . ."; }
         .dice[data-value="2"] { grid-template-areas: "a . ." ". . ." ". . b"; }
         .dice[data-value="3"] { grid-template-areas: "a . ." ". b ." ". . c"; }
@@ -173,19 +173,20 @@
     
     <div id="unlock-notification" class="unlock-notification fixed top-5 left-1/2 -translate-x-1/2 bg-theme-accent text-theme-background py-2.5 px-[15px] rounded-[5px] z-[1000] text-[0.8em] opacity-0 transition-opacity duration-300 transform pointer-events-none">Theme unlocked!</div>
 
-    <div class="theme-selector absolute top-2.5 right-2.5 z-10 flex flex-col gap-[5px]">
-        <div class="theme-button theme-retro w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-[var(--text-color)] shadow-[inset_0_0_5px_rgba(0,0,0,0.5)] transition-transform duration-200 hover:scale-110" data-theme="retro" title="Retro Theme" style="background: linear-gradient(45deg, #1a0a1f, #ff00ff);"></div>
-        <div class="theme-button theme-space w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-[var(--text-color)] shadow-[inset_0_0_5px_rgba(0,0,0,0.5)] transition-transform duration-200 hover:scale-110 locked filter grayscale opacity-50 cursor-not-allowed relative" data-theme="space" title="Space Theme (Locked: Roll 10 times)" data-unlock-at="10" style="background: linear-gradient(45deg, #050520, #4287f5);"></div>
-        <div class="theme-button theme-fantasy w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-[var(--text-color)] shadow-[inset_0_0_5px_rgba(0,0,0,0.5)] transition-transform duration-200 hover:scale-110 locked filter grayscale opacity-50 cursor-not-allowed relative" data-theme="fantasy" title="Fantasy Theme (Locked: Roll 20 times)" data-unlock-at="20" style="background: linear-gradient(45deg, #2c1a0a, #66cc33);"></div>
-        <div class="theme-button theme-fire w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-[var(--text-color)] shadow-[inset_0_0_5px_rgba(0,0,0,0.5)] transition-transform duration-200 hover:scale-110 locked filter grayscale opacity-50 cursor-not-allowed relative" data-theme="fire" title="Fire Theme (Locked: Roll 30 times)" data-unlock-at="30" style="background: linear-gradient(45deg, #300808, #ff4500);"></div>
-    </div>
-
     <div class="game-container bg-[rgba(10,5,15,0.85)] rounded-[15px] border-[3px] border-theme-primary text-center w-full max-w-[500px] h-full max-h-[95vh] z-50 relative 
                  flex flex-col justify-around box-border overflow-y-auto 
                  px-5 py-[clamp(10px,3vh,20px)] sm:py-[clamp(10px,2vh,15px)] sm:px-[15px]
                  transform transition-transform duration-[400ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] 
                  scale-[0.97] [perspective:1200px] rotate-x-[1.5deg] rotate-y-[-1deg]
                  sm:scale-[0.98] sm:[perspective:1000px] sm:rotate-x-[1deg] sm:rotate-y-[-0.5deg]">
+        
+        <div class="theme-selector flex flex-row justify-center items-center gap-2 mb-3 z-10">
+            <div class="theme-button theme-retro w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-[var(--text-color)] shadow-[inset_0_0_5px_rgba(0,0,0,0.5)] transition-transform duration-200 hover:scale-110" data-theme="retro" title="Retro Theme" style="background: linear-gradient(45deg, #1a0a1f, #ff00ff);"></div>
+            <div class="theme-button theme-space w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-[var(--text-color)] shadow-[inset_0_0_5px_rgba(0,0,0,0.5)] transition-transform duration-200 hover:scale-110 locked filter grayscale opacity-50 cursor-not-allowed relative" data-theme="space" title="Space Theme (Locked: Roll 10 times)" data-unlock-at="10" style="background: linear-gradient(45deg, #050520, #4287f5);"></div>
+            <div class="theme-button theme-fantasy w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-[var(--text-color)] shadow-[inset_0_0_5px_rgba(0,0,0,0.5)] transition-transform duration-200 hover:scale-110 locked filter grayscale opacity-50 cursor-not-allowed relative" data-theme="fantasy" title="Fantasy Theme (Locked: Roll 20 times)" data-unlock-at="20" style="background: linear-gradient(45deg, #2c1a0a, #66cc33);"></div>
+            <div class="theme-button theme-fire w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-[var(--text-color)] shadow-[inset_0_0_5px_rgba(0,0,0,0.5)] transition-transform duration-200 hover:scale-110 locked filter grayscale opacity-50 cursor-not-allowed relative" data-theme="fire" title="Fire Theme (Locked: Roll 30 times)" data-unlock-at="30" style="background: linear-gradient(45deg, #300808, #ff4500);"></div>
+        </div>
+
         <h1 class="text-theme-primary mt-0 mb-[15px] text-[1.6em] sm:text-[1.2em] leading-[1.2] sm:leading-[1.1] break-words">Ia si alearga caine</h1>
         
         <div class="controls mb-[15px] sm:mb-[10px] flex flex-col items-center gap-[10px] sm:gap-[8px]">
@@ -198,8 +199,7 @@
                 <button class="dice-set-button bg-theme-dice-bg text-theme-dice-dot border border-theme-secondary rounded-[5px] py-[5px] px-2 text-[0.7em] cursor-pointer transition-colors duration-200 transform hover:bg-theme-primary hover:text-theme-background hover:scale-105 active" data-set="numbers">Classic</button>
                 <button class="dice-set-button bg-theme-dice-bg text-theme-dice-dot border border-theme-secondary rounded-[5px] py-[5px] px-2 text-[0.7em] cursor-pointer transition-colors duration-200 transform hover:bg-theme-primary hover:text-theme-background hover:scale-105" data-set="space">Space</button>
                 <button class="dice-set-button bg-theme-dice-bg text-theme-dice-dot border border-theme-secondary rounded-[5px] py-[5px] px-2 text-[0.7em] cursor-pointer transition-colors duration-200 transform hover:bg-theme-primary hover:text-theme-background hover:scale-105" data-set="fantasy">Fantasy</button>
-                <button class="dice-set-button bg-theme-dice-bg text-theme-dice-dot border border-theme-secondary rounded-[5px] py-[5px] px-2 text-[0.7em] cursor-pointer transition-colors duration-200 transform hover:bg-theme-primary hover:text-theme-background hover:scale-105" data-set="emoji">Emoji</button>
-            </div>
+                </div>
         </div>        
         <div class="dice-area flex justify-center gap-[15px] sm:gap-[10px] mb-5 sm:mb-[15px] min-h-[80px] sm:min-h-[60px]" id="dice-area">
             </div>
@@ -216,13 +216,20 @@
         const comboText = document.getElementById('combo-text');        
         const diceCountButtons = [document.getElementById('dice-count-2'), document.getElementById('dice-count-3')];
         const unlockNotification = document.getElementById('unlock-notification');
-        const themeButtons = document.querySelectorAll('.theme-button');
+        // Theme buttons are now inside game-container, adjust selector if needed, or keep if IDs are unique
+        const themeButtons = document.querySelectorAll('.game-container .theme-button'); 
         const diceSetButtons = document.querySelectorAll('.dice-set-button');
         
         let numberOfDice = 2; 
         let rollCount = localStorage.getItem('rollCount') ? parseInt(localStorage.getItem('rollCount')) : 0;
         let currentTheme = localStorage.getItem('currentTheme') || 'retro';
+        
         let currentDiceSet = localStorage.getItem('currentDiceSet') || 'numbers';
+        if (currentDiceSet === 'emoji') { // If old stored value was emoji, default to numbers
+            currentDiceSet = 'numbers';
+            localStorage.setItem('currentDiceSet', currentDiceSet);
+        }
+
         let unlockedThemes = localStorage.getItem('unlockedThemes') ? 
                              JSON.parse(localStorage.getItem('unlockedThemes')) : ['retro'];
 
@@ -239,6 +246,12 @@
                 } else {
                     button.classList.add('locked', 'filter', 'grayscale', 'opacity-50', 'cursor-not-allowed');
                 }
+                // Update lock icon visibility
+                const lockIcon = button.querySelector('.lock-icon');
+                if (lockIcon) {
+                    lockIcon.style.display = button.classList.contains('locked') ? 'inline' : 'none';
+                }
+
                 button.style.border = theme === currentTheme ? '3px solid var(--text-color)' : '2px solid var(--text-color)';
             });
         }
@@ -267,15 +280,8 @@
                 4: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V8h2v4zm4 4h-2v-2h2v2zm0-4h-2V8h2v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M4 20q0 .825.588 1.413T6 22h12q.825 0 1.413-.587T20 20V8q0-.825-.587-1.412T18 6H6q-.825 0-1.412.588T4 8Zm2-12h12v12H6Zm0 0V6V4q0-.825.588-1.412T8 2h8q.825 0 1.413.588T18 4v2h-2V4H8v2Z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.92V13H5v-1.99h7z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>'], 
                 5: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V8h2v4zm4 4h-2v-2h2v2zm0-4h-2V8h2v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M4 20q0 .825.588 1.413T6 22h12q.825 0 1.413-.587T20 20V8q0-.825-.587-1.412T18 6H6q-.825 0-1.412.588T4 8Zm2-12h12v12H6Zm0 0V6V4q0-.825.588-1.412T8 2h8q.825 0 1.413.588T18 4v2h-2V4H8v2Z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.92V13H5v-1.99h7z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L2.5 6.5V17.5L12 22L21.5 17.5V6.5L12 2ZM4.5 7.5L12 11L19.5 7.5L12 4L4.5 7.5Z"/></svg>'], 
                 6: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V8h2v4zm4 4h-2v-2h2v2zm0-4h-2V8h2v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M4 20q0 .825.588 1.413T6 22h12q.825 0 1.413-.587T20 20V8q0-.825-.587-1.412T18 6H6q-.825 0-1.412.588T4 8Zm2-12h12v12H6Zm0 0V6V4q0-.825.588-1.412T8 2h8q.825 0 1.413.588T18 4v2h-2V4H8v2Z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.92V13H5v-1.99h7z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2L2.5 6.5V17.5L12 22L21.5 17.5V6.5L12 2ZM4.5 7.5L12 11L19.5 7.5L12 4L4.5 7.5Z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3v-2H5v2h14z"/></svg>']
-            },
-            emoji: { 
-                1: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 15.4V22h2v-6.1l1.7-4.4 1.1 1 1.1-1.3L14.6 12H18v2h2v-2.2c0-.5-.2-.9-.5-1.2L14.8 7c-.3-.3-.7-.3-1 0l-1.7 1.9-1.3-2.3c-.2-.3-.5-.4-.8-.4s-.6.1-.8.4l-1.7 2.9c-.3.6-.2 1.2.1 1.7.3.5.9.8 1.5.8H9.8z"/></svg>'], 
-                2: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 15.4V22h2v-6.1l1.7-4.4 1.1 1 1.1-1.3L14.6 12H18v2h2v-2.2c0-.5-.2-.9-.5-1.2L14.8 7c-.3-.3-.7-.3-1 0l-1.7 1.9-1.3-2.3c-.2-.3-.5-.4-.8-.4s-.6.1-.8.4l-1.7 2.9c-.3.6-.2 1.2.1 1.7.3.5.9.8 1.5.8H9.8z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M22 10.5c0-.28-.22-.5-.5-.5H18v-2h-2.5c-1.1 0-2.16.36-3 1H12c-.55 0-1 .45-1 1v.5c0 .83.67 1.5 1.5 1.5H14v1h-1.5c-.83 0-1.5.67-1.5 1.5V16c0 .83.67 1.5 1.5 1.5h2c.28 0 .5-.22.5-.5V13h1.5c.83 0 1.5-.67 1.5-1.5v-1zm-6.5-2c.55 0 1-.45 1-1s-.45-1-1-1h-1v2h1zM4.21 18.79C3.44 17.93 3 16.77 3 15.5c0-2.63 3.5-4.5 5.5-4.5h.5V9.5c0-.83-.67-1.5-1.5-1.5H6V6h1.5c1.93 0 3.5 1.57 3.5 3.5v1.5c0 .83.67 1.5 1.5 1.5h1c.28 0 .5.22.5.5v2c0 .28-.22.5-.5.5h-1.28c-.57 1.62-2.04 2.86-3.82 3.24V21H7.21c-.48 0-.94-.13-1.33-.36l-1.67-.95z"/></svg>'], 
-                3: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 15.4V22h2v-6.1l1.7-4.4 1.1 1 1.1-1.3L14.6 12H18v2h2v-2.2c0-.5-.2-.9-.5-1.2L14.8 7c-.3-.3-.7-.3-1 0l-1.7 1.9-1.3-2.3c-.2-.3-.5-.4-.8-.4s-.6.1-.8.4l-1.7 2.9c-.3.6-.2 1.2.1 1.7.3.5.9.8 1.5.8H9.8z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M22 10.5c0-.28-.22-.5-.5-.5H18v-2h-2.5c-1.1 0-2.16.36-3 1H12c-.55 0-1 .45-1 1v.5c0 .83.67 1.5 1.5 1.5H14v1h-1.5c-.83 0-1.5.67-1.5 1.5V16c0 .83.67 1.5 1.5 1.5h2c.28 0 .5-.22.5-.5V13h1.5c.83 0 1.5-.67 1.5-1.5v-1zm-6.5-2c.55 0 1-.45 1-1s-.45-1-1-1h-1v2h1zM4.21 18.79C3.44 17.93 3 16.77 3 15.5c0-2.63 3.5-4.5 5.5-4.5h.5V9.5c0-.83-.67-1.5-1.5-1.5H6V6h1.5c1.93 0 3.5 1.57 3.5 3.5v1.5c0 .83.67 1.5 1.5 1.5h1c.28 0 .5.22.5.5v2c0 .28-.22.5-.5.5h-1.28c-.57 1.62-2.04 2.86-3.82 3.24V21H7.21c-.48 0-.94-.13-1.33-.36l-1.67-.95z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-4h10v-2H7v2zm3-4h4V8H10v4z"/></svg>'], 
-                4: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 15.4V22h2v-6.1l1.7-4.4 1.1 1 1.1-1.3L14.6 12H18v2h2v-2.2c0-.5-.2-.9-.5-1.2L14.8 7c-.3-.3-.7-.3-1 0l-1.7 1.9-1.3-2.3c-.2-.3-.5-.4-.8-.4s-.6.1-.8.4l-1.7 2.9c-.3.6-.2 1.2.1 1.7.3.5.9.8 1.5.8H9.8z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M22 10.5c0-.28-.22-.5-.5-.5H18v-2h-2.5c-1.1 0-2.16.36-3 1H12c-.55 0-1 .45-1 1v.5c0 .83.67 1.5 1.5 1.5H14v1h-1.5c-.83 0-1.5.67-1.5 1.5V16c0 .83.67 1.5 1.5 1.5h2c.28 0 .5-.22.5-.5V13h1.5c.83 0 1.5-.67 1.5-1.5v-1zm-6.5-2c.55 0 1-.45 1-1s-.45-1-1-1h-1v2h1zM4.21 18.79C3.44 17.93 3 16.77 3 15.5c0-2.63 3.5-4.5 5.5-4.5h.5V9.5c0-.83-.67-1.5-1.5-1.5H6V6h1.5c1.93 0 3.5 1.57 3.5 3.5v1.5c0 .83.67 1.5 1.5 1.5h1c.28 0 .5.22.5.5v2c0 .28-.22.5-.5.5h-1.28c-.57 1.62-2.04 2.86-3.82 3.24V21H7.21c-.48 0-.94-.13-1.33-.36l-1.67-.95z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-4h10v-2H7v2zm3-4h4V8H10v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.41 4.41C12.63 5.19 12 6.29 12 7.5c0 1.21.63 2.31 1.41 3.09.78.78 1.88 1.41 3.09 1.41 1.21 0 2.31-.63 3.09-1.41.78-.78 1.41-1.88 1.41-3.09 0-1.21-.63-2.31-1.41-3.09-.78-.78-1.88-1.41-3.09-1.41-1.21 0-2.31.63-3.09 1.41M10 20c0-1.1.9-2 2-2s2 .9 2 2H5.83C5.92 17.82 7.76 13 12 13s6.08 4.82 6.17 7H14c0-1.1-.9-2-2-2s-2 .9-2 2H10z"/></svg>'], 
-                5: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 15.4V22h2v-6.1l1.7-4.4 1.1 1 1.1-1.3L14.6 12H18v2h2v-2.2c0-.5-.2-.9-.5-1.2L14.8 7c-.3-.3-.7-.3-1 0l-1.7 1.9-1.3-2.3c-.2-.3-.5-.4-.8-.4s-.6.1-.8.4l-1.7 2.9c-.3.6-.2 1.2.1 1.7.3.5.9.8 1.5.8H9.8z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M22 10.5c0-.28-.22-.5-.5-.5H18v-2h-2.5c-1.1 0-2.16.36-3 1H12c-.55 0-1 .45-1 1v.5c0 .83.67 1.5 1.5 1.5H14v1h-1.5c-.83 0-1.5.67-1.5 1.5V16c0 .83.67 1.5 1.5 1.5h2c.28 0 .5-.22.5-.5V13h1.5c.83 0 1.5-.67 1.5-1.5v-1zm-6.5-2c.55 0 1-.45 1-1s-.45-1-1-1h-1v2h1zM4.21 18.79C3.44 17.93 3 16.77 3 15.5c0-2.63 3.5-4.5 5.5-4.5h.5V9.5c0-.83-.67-1.5-1.5-1.5H6V6h1.5c1.93 0 3.5 1.57 3.5 3.5v1.5c0 .83.67 1.5 1.5 1.5h1c.28 0 .5.22.5.5v2c0 .28-.22.5-.5.5h-1.28c-.57 1.62-2.04 2.86-3.82 3.24V21H7.21c-.48 0-.94-.13-1.33-.36l-1.67-.95z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-4h10v-2H7v2zm3-4h4V8H10v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.41 4.41C12.63 5.19 12 6.29 12 7.5c0 1.21.63 2.31 1.41 3.09.78.78 1.88 1.41 3.09 1.41 1.21 0 2.31-.63 3.09-1.41.78-.78 1.41-1.88 1.41-3.09 0-1.21-.63-2.31-1.41-3.09-.78-.78-1.88-1.41-3.09-1.41-1.21 0-2.31.63-3.09 1.41M10 20c0-1.1.9-2 2-2s2 .9 2 2H5.83C5.92 17.82 7.76 13 12 13s6.08 4.82 6.17 7H14c0-1.1-.9-2-2-2s-2 .9-2 2H10z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M17.75 7.03A6.002 6.002 0 0012 3C9.24 3 6.85 4.61 5.73 6.87c-.22.45-.11.99.26 1.33.37.34.92.36 1.31.05A3.992 3.992 0 0112 5c1.31 0 2.5.63 3.25 1.64.21.28.55.38.86.26.31-.12.52-.41.54-.77zM6.25 16.97A6.002 6.002 0 0012 21c2.76 0 5.15-1.61 6.27-3.87.22-.45.11-.99-.26-1.33a.976.976 0 00-1.31-.05A3.992 3.992 0 0112 19c-1.31 0-2.5-.63-3.25-1.64a.71.71 0 00-.86-.26c-.31.12-.52.41-.54.77z"/></svg>'], 
-                6: ['<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 15.4V22h2v-6.1l1.7-4.4 1.1 1 1.1-1.3L14.6 12H18v2h2v-2.2c0-.5-.2-.9-.5-1.2L14.8 7c-.3-.3-.7-.3-1 0l-1.7 1.9-1.3-2.3c-.2-.3-.5-.4-.8-.4s-.6.1-.8.4l-1.7 2.9c-.3.6-.2 1.2.1 1.7.3.5.9.8 1.5.8H9.8z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M22 10.5c0-.28-.22-.5-.5-.5H18v-2h-2.5c-1.1 0-2.16.36-3 1H12c-.55 0-1 .45-1 1v.5c0 .83.67 1.5 1.5 1.5H14v1h-1.5c-.83 0-1.5.67-1.5 1.5V16c0 .83.67 1.5 1.5 1.5h2c.28 0 .5-.22.5-.5V13h1.5c.83 0 1.5-.67 1.5-1.5v-1zm-6.5-2c.55 0 1-.45 1-1s-.45-1-1-1h-1v2h1zM4.21 18.79C3.44 17.93 3 16.77 3 15.5c0-2.63 3.5-4.5 5.5-4.5h.5V9.5c0-.83-.67-1.5-1.5-1.5H6V6h1.5c1.93 0 3.5 1.57 3.5 3.5v1.5c0 .83.67 1.5 1.5 1.5h1c.28 0 .5.22.5.5v2c0 .28-.22.5-.5.5h-1.28c-.57 1.62-2.04 2.86-3.82 3.24V21H7.21c-.48 0-.94-.13-1.33-.36l-1.67-.95z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-4h10v-2H7v2zm3-4h4V8H10v4z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M13.41 4.41C12.63 5.19 12 6.29 12 7.5c0 1.21.63 2.31 1.41 3.09.78.78 1.88 1.41 3.09 1.41 1.21 0 2.31-.63 3.09-1.41.78-.78 1.41-1.88 1.41-3.09 0-1.21-.63-2.31-1.41-3.09-.78-.78-1.88-1.41-3.09-1.41-1.21 0-2.31.63-3.09 1.41M10 20c0-1.1.9-2 2-2s2 .9 2 2H5.83C5.92 17.82 7.76 13 12 13s6.08 4.82 6.17 7H14c0-1.1-.9-2-2-2s-2 .9-2 2H10z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M17.75 7.03A6.002 6.002 0 0012 3C9.24 3 6.85 4.61 5.73 6.87c-.22.45-.11.99.26 1.33.37.34.92.36 1.31.05A3.992 3.992 0 0112 5c1.31 0 2.5.63 3.25 1.64.21.28.55.38.86.26.31-.12.52-.41.54-.77zM6.25 16.97A6.002 6.002 0 0012 21c2.76 0 5.15-1.61 6.27-3.87.22-.45.11-.99-.26-1.33a.976.976 0 00-1.31-.05A3.992 3.992 0 0112 19c-1.31 0-2.5-.63-3.25-1.64a.71.71 0 00-.86-.26c-.31.12-.52.41-.54.77z"/></svg>', '<svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full themed-icon"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>']
             }
+            // Emoji theme removed
         };        
         
         function createDieElement(value) {
@@ -287,13 +293,13 @@
             if (itemsToRender) {
                 itemsToRender.forEach(itemContent => { 
                     const pipElement = document.createElement('div');
-                    pipElement.className = 'dice-face-item self-center justify-self-center'; 
+                    // Added p-0.5 for padding around SVGs
+                    pipElement.className = 'dice-face-item self-center justify-self-center p-0.5'; 
 
                     if (currentDiceSet === 'numbers') {
                         pipElement.className += ' dot w-3 h-3 sm:w-2.5 sm:h-2.5 bg-theme-dice-dot rounded-full';
                         pipElement.style.boxShadow = 'var(--glow-soft), 0 0 3px var(--dice-dot)';
                     } else {
-                        // Removed text-size classes (text-2xl, sm:text-xl) from here.
                         // The SVG will scale to this container. text-theme-dice-dot provides currentColor for SVG.
                         pipElement.className += ' themed-pip flex items-center justify-center w-full h-full text-theme-dice-dot';
                         pipElement.innerHTML = itemContent; // itemContent is the SVG string with its own classes
@@ -339,7 +345,9 @@
         }
 
         function checkUnlockables() {
-            themeButtons.forEach(button => {
+            // Ensure themeButtons are correctly selected after DOM modifications if any
+            const currentThemeButtons = document.querySelectorAll('.game-container .theme-button');
+            currentThemeButtons.forEach(button => {
                 if (button.classList.contains('locked') && button.dataset.unlockAt) {
                     const unlockAt = parseInt(button.dataset.unlockAt);
                     if (rollCount >= unlockAt) {
@@ -347,10 +355,23 @@
                         button.removeAttribute('data-unlock-at');
                         const theme = button.dataset.theme;
                         button.title = `${theme.charAt(0).toUpperCase() + theme.slice(1)} Theme`;
+                        
+                        // Remove lock icon if it exists
+                        const lockIcon = button.querySelector('.lock-icon');
+                        if (lockIcon) lockIcon.remove();
+
                         if (!unlockedThemes.includes(theme)) {
                             unlockedThemes.push(theme);
                             localStorage.setItem('unlockedThemes', JSON.stringify(unlockedThemes));
                             showUnlockNotification(`${theme.charAt(0).toUpperCase() + theme.slice(1)} Theme Unlocked!`);
+                        }
+                    } else {
+                        // Ensure lock icon is present if still locked
+                        if (!button.querySelector('.lock-icon')) {
+                            const lockIconEl = document.createElement('span');
+                            lockIconEl.className = 'lock-icon absolute text-xs top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2';
+                            lockIconEl.textContent = '🔒';
+                            button.appendChild(lockIconEl);
                         }
                     }
                 }
@@ -415,7 +436,8 @@
             });
         });
         
-        themeButtons.forEach(button => {
+        // Re-select themeButtons after DOM is ready for event listeners
+        document.querySelectorAll('.game-container .theme-button').forEach(button => {
             button.addEventListener('click', () => {
                 const theme = button.dataset.theme;
                 if (button.classList.contains('locked')) {
@@ -440,16 +462,27 @@
             });
         });
 
-        function initializeDice() {
+        function initializeApp() { // Renamed from initializeDice for clarity
+            // Create lock icons for theme buttons that are locked
+            document.querySelectorAll('.theme-button.locked').forEach(button => {
+                if (!button.querySelector('.lock-icon')) { // Add lock icon if not present
+                    const lockIconEl = document.createElement('span');
+                    lockIconEl.className = 'lock-icon absolute text-xs top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2';
+                    lockIconEl.textContent = '🔒'; // Simple text lock
+                    button.appendChild(lockIconEl);
+                }
+            });
+
             initThemes(); 
             initDiceSets();
             renderDice(Array(numberOfDice).fill(0).map(() => rollSingleDie()));
             diceCountButtons.forEach(btn => btn.classList.remove('active'));
             const activeButton = document.querySelector(`.toggle-button[data-count="${numberOfDice}"]`);
             if (activeButton) activeButton.classList.add('active');
+            checkUnlockables(); // Check unlock status on load
         }
         
-        window.onload = initializeDice; 
+        window.onload = initializeApp; 
     </script>
 </body>
 </html>
