@@ -198,7 +198,9 @@
             --dice-bg: #220022;
             --dice-dot: #ffff00; /* Llama dice dot color */
             --crt-lines-color: rgba(255, 255, 0, 0.05); 
-            font-family: 'Bungee Spice', cursive !important; /* Ensure this applies widely */
+            font-family: 'Bungee Spice', cursive, sans-serif !important; /* Ensure this applies widely */
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
         }
         /* Apply Bungee Spice font to specific elements within Llama theme if body !important isn't enough */
         body.theme-crazyllama #main-title,
@@ -207,7 +209,7 @@
         body.theme-crazyllama #combo-text,
         body.theme-crazyllama .toggle-button,
         body.theme-crazyllama .dice-set-button {
-            font-family: 'Bungee Spice', cursive !important;
+            font-family: 'Bungee Spice', cursive, sans-serif !important;
         }
 
 
@@ -289,7 +291,8 @@
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color), var(--primary-color));
             background-size: 400% 400%; 
             animation: crazy-button-bg 1.5s ease infinite, crazy-button-text-shadow 0.4s infinite alternate;
-            color: #101010; 
+            color: var(--text-color); /* Changed from #101010 */
+            text-shadow: 0 0 2px #000000, 0 0 5px #000000, 1px 1px 3px #000000; /* Added */
             border-width: 3px;
             font-weight: bold;
             /* Adjusted font size for Llama theme roll button, especially for mobile */
@@ -306,7 +309,8 @@
         }
 
         body.theme-crazyllama h1#main-title { /* Target h1 specifically */
-            animation: crazy-text-glow 0.8s infinite alternate;
+            /* animation: crazy-text-glow 0.8s infinite alternate; */
+            text-shadow: 1px 1px 2px #000000, 0 0 4px #000000; /* Added for visibility */
             /* Adjusted font size for Llama theme title, especially for mobile */
             font-size: clamp(1.2em, 4.5vw, 1.8em) !important; 
             letter-spacing: 1px !important; /* Slightly reduced letter spacing */
@@ -314,7 +318,7 @@
             word-break: break-word; /* Help with breaking long words if any */
         }
         body.theme-crazyllama #result-text {
-            animation: crazy-text-color-cycle 1.5s infinite linear;
+            /* animation: crazy-text-color-cycle 1.5s infinite linear; */
             font-weight: bold;
             font-size: clamp(0.9em, 3vw, 1em) !important; /* Adjust if necessary */
         }
@@ -354,6 +358,7 @@
             border-color: var(--accent-color);
             font-size: clamp(0.65em, 2.5vw, 0.7em) !important; /* Smaller font for toggles in Llama */
             padding: 5px 8px !important; /* Adjust padding */
+            text-shadow: 1px 1px 2px #000000; /* Added for visibility */
         }
         body.theme-crazyllama .toggle-button.active, 
         body.theme-crazyllama .dice-set-button.active {
